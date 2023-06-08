@@ -41,7 +41,7 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
 
     return <>
         <div className="flex gap-3">
-            <div style={!valid && touched ? { borderWidth: "0.1px", borderColor: focused ? "red" : "red" } : { borderWidth: "0.1px", borderColor: focused ? "#311248" : "#13121233" }} className="w-full  flex items-center  h-[50px] relative">
+            <div style={!valid && touched ? { borderWidth: "0.1px", borderColor: focused ? "red" : "red" } : { borderWidth: "0.1px", borderColor: focused ? "#311248" : "#13121233" }} className="w-full  flex items-center  h-[50px] relative rounded-md">
                 <p style={focused ? { bottom: "38px", color: !valid && touched ? "red" : "#311248", transform: " scale(0.7)" } : { bottom: "15px", color: !valid && touched ? "red" : "#311248", }} className="absolute text-[#131212ba] text-sm duration-200 ml-3 px-3 bg-[#fff]">{label}</p>
                 <input
                     onChange={(e) => onChange(e.target.value)}
@@ -52,7 +52,7 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
                     className="w-full border-none  p-3 h-full outline-none bg-transparent" />
             </div>
             {type === 'password' &&
-                <button type="button" onClick={showPassword} className="bg-transparent border-[#13121233] flex items-center justify-center active:bg-gray-100 border w-[100px]">
+                <button type="button" onClick={showPassword} className="bg-transparent rounded-md border-[#13121233] flex items-center justify-center active:bg-gray-100 border w-[100px]">
                     {hidePassword ? <GrView /> : <i className=" text-lg"><BiHide /></i>}
                 </button>}
         </div>
