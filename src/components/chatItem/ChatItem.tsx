@@ -1,6 +1,5 @@
 
 import logo from '../../assets/chatbot.png'
-import { HiOutlineTrash } from 'react-icons/hi'
 import { createRipples } from 'react-ripples';
 import { useNavigate } from 'react-router';
 
