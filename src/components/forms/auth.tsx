@@ -2,6 +2,13 @@ import AnimatedInput from "../inputs/animatedInput"
 import { validateEmail } from "../../helpers/validation"
 import { validatePassword } from "../../helpers/validation"
 import React, { useState } from "react"
+import { createRipples } from 'react-ripples'
+
+const RippleButton = createRipples({
+    color: "#ffffff1c",
+    during: 600,
+    className: "w-full rounded-md "
+})
 
 interface Props {
     onSubmit: Function,
@@ -56,10 +63,13 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit }) => {
         })}
 
         <div className="max-w-[400px] m-auto mt-5">
-            <button type="submit" onClick={(e) => {
-                e.preventDefault();
-                onSubmit({ email: form[0].value, password: form[1].value, valid: emailValidation && passwordValidation ? true : false })
-            }} disabled={emailValidation && passwordValidation ? false : true} className='w-full disabled:bg-gray-300 disabled:cursor-not-allowed py-4 cursor-pointer text-white  bg-[#131d2f]'>{submitButtonLabel}</button>
+            <RippleButton>
+                <button type="submit" onClick={(e) => {
+                    e.preventDefault();
+                    onSubmit({ email: form[0].value, password: form[1].value, valid: emailValidation && passwordValidation ? true : false })
+                }} disabled={emailValidation && passwordValidation ? false : true} className='w-full disabled:bg-gray-300 disabled:cursor-not-allowed py-4 cursor-pointer text-white  bg-[#131d2f]'>{submitButtonLabel}</button>
+            </RippleButton>
         </div>
+
     </form>
 }

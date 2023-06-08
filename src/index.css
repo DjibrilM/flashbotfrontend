@@ -4,3 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .sideMenu-container::-webkit-scrollbar {
+        @apply bg-transparent pr-2 w-2 appearance-none
+    }
+
+    .sideMenu-container::-webkit-scrollbar-thumb {
+        @apply bg-[#ffffff0b] rounded-md appearance-none
+    }
+}

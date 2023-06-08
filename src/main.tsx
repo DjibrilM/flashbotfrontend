@@ -10,6 +10,8 @@ import {
 import Root from './routes/Root';
 import Login from './routes/auth/Login';
 import Register from './routes/auth/register';
+import { Root as ChatRootPage } from './routes/chat/Root';
+import ChatDetail from './routes/chatDetail/ChatDetail';
 
 
 const router = createBrowserRouter([
@@ -24,6 +26,16 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />
+      },
+      {
+        path: "chat",
+        element: <ChatRootPage />,
+        children: [
+          {
+            path: "conversation/:id",
+            element: <ChatDetail />
+          }
+        ]
       }
     ]
   }
