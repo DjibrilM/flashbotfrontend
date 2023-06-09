@@ -3,6 +3,7 @@ import ChatItem from "../chatItem/ChatItem";
 import { BiLogOut } from 'react-icons/bi';
 import { SlSettings } from 'react-icons/sl'
 import { createRipples } from 'react-ripples'
+import React from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -10,17 +11,28 @@ const RippleButton = createRipples({
     className: "w-full rounded-md "
 })
 
+interface Props {
+    isOpen:boolean
+}
 
-const SideNavigation = () => {
-    return <aside className="max-w-[350px]  duration-150 ml-5 w-full">
+
+const SideNavigation: React.FC<Props> = ({ isOpen }) => {
+    return <aside style={isOpen ? { maxWidth: "350px" } : { maxWidth: "0px", }} className="overflow-hidden custom-md:block hidden  duration-300  w-full">
         <nav className="w-full  h-[400px] overflow-hidden  bg-[#ffffff0b] rounded-md  ">
+
             <div className="w-full gap-2 text-white items-center flex pl-5 h-14 border-b bg-[#ffffff19] border-[#ffffff19]">
                 <BsChatLeftDots />
                 <h1 className="text-[18px] font-bold">Your Chat</h1>
             </div>
 
             <div className="w-full pr-1 mt-1">
-                <div className="w-full flex flex-col gap-3 overflow-auto sideMenu-container p-2 h-[340px]">
+                <div className="w-full overflow-auto sideMenu-container p-2 h-[340px]">
+                    <ChatItem />
+                    <ChatItem />
+                    <ChatItem />
+                    <ChatItem />
+                    <ChatItem />
+                    <ChatItem />
                     <ChatItem />
                 </div>
             </div>
@@ -41,8 +53,6 @@ const SideNavigation = () => {
 
             </ul>
         </div>
-
-
 
         <div className="h-5"></div>
         <RippleButton >

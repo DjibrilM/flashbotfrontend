@@ -8,6 +8,9 @@ export default {
     extend: {
       fontFamily: {
         "primary": ['Lato, sans-serif']
+      },
+      screens: {
+        "custom-md": "950px"
       }
     },
   },
