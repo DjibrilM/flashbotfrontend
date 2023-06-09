@@ -3,8 +3,10 @@ import MainHeader from "../../components/header/MainHeader";
 import { Outlet } from "react-router";
 import { useParams } from 'react-router-dom';
 import chatVector from '../../assets/live-chat.png';
+import MobileSideMenu from '../../components/navigation/MobileSideMenu';
 
 import { createRipples } from 'react-ripples'
+import { useState } from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -15,13 +17,14 @@ const RippleButton = createRipples({
 
 export const Root = () => {
     const param = useParams();
+    const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
 
     return <main className="bg-[#131d2f] flex flex-col   min-h-screen h-full w-full" >
-        <MainHeader />
-        <section className="flex">
-            <SideNavigation />
-
-            <section className="mx-5 rounded-md w-full h-full">
+        <MainHeader openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
+        <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex  mx-5 ">
+            <SideNavigation isOpen={sideMenuOpen} />
+            <MobileSideMenu />
+            <section className="rounded-md w-full h-full">
                 <Outlet />
                 {!param.id &&
                     <>
