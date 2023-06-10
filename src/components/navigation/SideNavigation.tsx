@@ -1,9 +1,9 @@
 import { BsChatLeftDots } from "react-icons/bs";
 import ChatItem from "../chatItem/ChatItem";
 import { BiLogOut } from 'react-icons/bi';
-import { SlSettings } from 'react-icons/sl'
 import { createRipples } from 'react-ripples'
 import React from "react";
+import Switch from "../switch/Switch";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -12,7 +12,7 @@ const RippleButton = createRipples({
 })
 
 interface Props {
-    isOpen:boolean
+    isOpen: boolean
 }
 
 
@@ -36,17 +36,16 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
         <div className="mt-5">
             <ul>
-                <li className="flex text-gray-200 border-b border-[#ffffff0b] pb-7 gap-4 items-center font-bold">
+                <li className="flex mt-6  text-gray-200 gap-4 pb-4 border-b border-[#ffffff0b]  items-center font-bold">
+                    <span className="text-sm">Voice Reader</span>
+                    <Switch />
+                </li>
+
+
+                <li className="flex text-gray-200 mt-4  gap-4 items-center font-bold">
                     <BiLogOut className="text-2xl" />
                     <span>Logout</span>
                 </li>
-
-
-                <li className="flex mt-6  text-gray-200 gap-4 items-center font-bold">
-                    <SlSettings className="text-2xl text-white" />
-                    <span>Setting</span>
-                </li>
-
             </ul>
         </div>
 
