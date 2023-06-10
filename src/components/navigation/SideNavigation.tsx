@@ -26,11 +26,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
             </div>
 
             <div className="w-full pr-1 mt-1">
-                <div className="w-full overflow-auto sideMenu-container p-2 h-[340px]">
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
+                <div className="w-full overflow-auto sideMenu-container pr-1 pl-2 pt-3 h-[340px]">
                     <ChatItem />
                     <ChatItem />
                     <ChatItem />
