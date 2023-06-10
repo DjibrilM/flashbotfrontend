@@ -8,19 +8,24 @@ const RippleButton = createRipples({
     color: "#ffffff0b",
     during: 600,
     className: "w-[100%]  rounded-md "
-})
+});
 
-const MobileSideMenu = () => {
+interface Props {
+    IsOpen: boolean,
+    onClose: Function
+}
+
+const MobileSideMenu: React.FC<Props> = ({ IsOpen, onClose }) => {
     return <>
-        <div className="w-full   h-screen fixed z-20 top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-[#0000007f]"></div>
-        <nav className="fixed z-30   w-full max-w-[350px] h-screen bg-[#1b263a] left-0 top-0 bottom-0 ">
+        <div style={!IsOpen ? { width: "0px" } : {}} onClick={()=> onClose()} className="w-full custom-md:hidden   h-screen fixed z-20 top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-[#0000007f]"></div>
+        <nav style={IsOpen ? { left: "0px" } : { left: "-400px" }} className="fixed z-30 duration-500 custom-md:hidden   w-full max-w-[350px] h-screen bg-[#1b263a] left-0 top-0 bottom-0 ">
             <div className="w-full bg-[#ffffff19] border-b h-16 p-4 flex justify-between border-[#ffffff1b]">
                 <div className="flex gap-4 items-center">
                     <BsChatLeftDots className="text-white text-[20px]" />
                     <h1 className=" font-bold text-[18px] text-white ">Your chats</h1>
                 </div>
 
-                <div className="w-7 h-7 flex items-center justify-center rounded-md border-[#ffffff26] border">
+                <div onClick={() => onClose()} className="w-7 cursor-pointer  h-7 flex items-center justify-center rounded-md border-[#ffffff26] border">
                     <IoMdClose className="text-white" />
                 </div>
             </div>
