@@ -27,16 +27,16 @@ export const Root = () => {
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
     const [mobileSideMenuOpen, SetMobileSideMenuOpen] = useState<boolean>(false);
 
-    return <main className="bg-[#131d2f] flex flex-col   min-h-screen h-full w-full" >
+    return <main className="bg-[#131d2f] flex flex-col   h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
-        <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex  mx-5 ">
+        <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  mx-5 ">
             <SideNavigation isOpen={sideMenuOpen} />
             <MobileSideMenu IsOpen={mobileSideMenuOpen} onClose={() => SetMobileSideMenuOpen(false)} />
-            <section className="rounded-md w-full h-full">
+            <section className="rounded-md w-full h-[calc(100vh-125px)] justify-between gap-4 flex flex-col">
                 <Outlet />
                 {!param.id &&
                     <>
-                        <div className="max-w-[500px] bg-white m-auto  h-[300px] rounded-lg ">
+                        <div className="max-w-[500px] bg-white m-auto  h-[300px] rounded-lg  ">
                             <img className="w-32 pt-10 m-auto" src={chatVector} alt="" />
                             <h1 className="bg-red text-center mt-3  text-gray-700">No chat selected yet 🤖</h1>
 
