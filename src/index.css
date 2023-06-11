@@ -14,3 +14,28 @@
         @apply bg-[#ffffff0b] rounded-md appearance-none
     }
 }
+
+
+
+.record-indicator {
+    animation: 2s infinite linear opacity;
+}
+
+@keyframes opacity {
+    0%{
+        opacity: 1;
+    }
+
+    50%{
+        opacity: 0;
+    }
+
+    80%{
+        opacity: 0;
+    }
+
+    80%{
+        opacity: 1;
+    }
+}
+
