@@ -7,7 +7,7 @@ import { BiMicrophone } from 'react-icons/bi'
 const RippleButton = createRipples({
   color: "#ffffff0b",
   during: 600,
-  className: "rounded-md  h-14"
+  className: "rounded-md  h-12"
 })
 
 const RecordRippleButton = createRipples({
@@ -42,7 +42,7 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
         rows={1}
         onChange={updateHeight}
         placeholder="Tell me something...."
-        className="p-4 overflow-hidden w-full outline-none text-white resize-none h-full bg-transparent"></textarea>
+        className="p-4 text-sm overflow-hidden w-full outline-none text-white resize-none h-full bg-transparent"></textarea>
     </div>
     <RippleButton>
       <button type="button" className="border outline-none flex items-center justify-center text-2xl text-[#ffffff89] bg-[#ffffff0b] rounded-md outline border-[#ffffff25]  w-20">

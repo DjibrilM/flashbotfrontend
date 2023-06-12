@@ -36,9 +36,9 @@ export const Root = () => {
                 <Outlet />
                 {!param.id &&
                     <>
-                        <div className="max-w-[500px] bg-white m-auto  h-[300px] rounded-lg  ">
+                        <div className="max-w-[500px] w-full bg-white m-auto  h-[300px] rounded-lg  ">
                             <img className="w-32 pt-10 m-auto" src={chatVector} alt="" />
-                            <h1 className="bg-red text-center mt-3  text-gray-700">No chat selected yet 🤖</h1>
+                            <h1 className="bg-red text-center  mt-3  text-gray-700">No chat selected yet <span className="text-3xl">🤖</span> </h1>
 
                             <div className="flex justify-center">
                                 <WhiteRippleButton>
