@@ -3,6 +3,7 @@ import { validateEmail } from "../../helpers/validation"
 import { validatePassword } from "../../helpers/validation"
 import React, { useState } from "react"
 import { createRipples } from 'react-ripples'
+import { Link } from "react-router-dom"
 
 const RippleButton = createRipples({
     color: "#ffffff1c",
@@ -61,6 +62,10 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit }) => {
                 <AnimatedInput valid={el.type === "email" ? emailValidation : passwordValidation} errorMessage={el.errorMessage} touched={el.touched} value={el.value} label={el.label} type={el.type} onChange={(value: string) => onInputChange(index, value)} />
             </div>
         })}
+
+        <div className="max-w-[400px] relative bottom-4 text-sm  mt-2 m-auto">
+            <Link to="/forgotten-password" className=" text-blue-600"> <p>Forgotten password ? </p> </Link>
+        </div>
 
         <div className="max-w-[400px] m-auto mt-5">
             <RippleButton>
