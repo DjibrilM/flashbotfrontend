@@ -22,7 +22,7 @@ const AddButtonRipple = createRipples({
 })
 
 const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
-    return <header className="h-16 rounded-md items-center z-0 bg-[#ffffff0b] m-5 flex justify-between">
+    return <header className="h-16  items-center z-0 bg-[#ffffff0b] mb-3 flex justify-between">
         <div className="flex items-center gap-5 sm:px-4">
             <RippleButton>
                 <button onClick={() => openDesktopMenu()} className='p-2 bg-[#ffffff0b] custom-md:block hidden rounded-full'>
