@@ -20,6 +20,10 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
+        path: "forgotten-password",
+        element: <Login />
+      },
+      {
         path: "login",
         element: <Login />
       },
