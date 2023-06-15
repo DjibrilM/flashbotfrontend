@@ -32,7 +32,7 @@ export const Root = () => {
         <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  mx-5 ">
             <SideNavigation isOpen={sideMenuOpen} />
             <MobileSideMenu IsOpen={mobileSideMenuOpen} onClose={() => SetMobileSideMenuOpen(false)} />
-            <section className="rounded-md w-full h-[calc(100vh-125px)] justify-between gap-4 flex flex-col">
+            <section className="rounded-md w-full h-[calc(100vh-90px)] justify-between gap-4 flex flex-col">
                 <Outlet />
                 {!param.id &&
                     <>
@@ -42,7 +42,7 @@ export const Root = () => {
 
                             <div className="flex justify-center">
                                 <WhiteRippleButton>
-                                    <button onClick={()=> SetMobileSideMenuOpen(true)} className="px-7 custom-md:hidden font-bold text-white mt-5 rounded-md text-sm bg-blue-500 py-3 m-auto">
+                                    <button onClick={() => SetMobileSideMenuOpen(true)} className="px-7 custom-md:hidden font-bold text-white mt-5 rounded-md text-sm bg-blue-500 py-3 m-auto">
                                         select chat
                                     </button>
                                 </WhiteRippleButton>

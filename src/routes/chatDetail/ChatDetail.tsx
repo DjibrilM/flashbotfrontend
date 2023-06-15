@@ -22,11 +22,11 @@ const ChatDetail = () => {
   } = useSpeechRecognition();
 
 
-  const createSpeech = () => {
+  const createSpeech = async () => {
     try {
       let utterance = new SpeechSynthesisUtterance(transcript);
-      const voice = window.speechSynthesis.getVoices()[3];
-      utterance.voice = voice;
+      const voice: any[] = await window.speechSynthesis.getVoices();
+      utterance.voice = voice[3];
       speechSynthesis.speak(utterance);
     } catch (error) {
       console.log(error)
@@ -35,7 +35,7 @@ const ChatDetail = () => {
 
 
   return <>
-    <div className=" h-full overflow-auto rounded-lg flex flex-col p-5 w-full  text-white ">
+    <div style={listening ? {background:"#0006"}:{}} className=" h-full sideMenu-container overflow-auto relative rounded-lg flex flex-col p-5 w-full  text-white ">
       {listening ?
         <>
           <div className="h-full w-full">
@@ -52,8 +52,10 @@ const ChatDetail = () => {
           </div>
         </> : <>
           <ResponseMessage />
+          <ResponseMessage />
         </>}
     </div>
+    {/* <div style={{ background: "linear-gradient(transparent,#131d2f,#131d2f)" }} className="w-full h-16  relative bottom-10"></div> */}
     <ChatArea
       onStopRecording={() => {
         SpeechRecognition.stopListening();
