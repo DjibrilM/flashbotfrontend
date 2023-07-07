@@ -1,21 +1,43 @@
 
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router";
-import { useNavigate } from "react-router";
-import { Navigate } from "react-router";
+import { Outlet, useNavigation } from "react-router";
+import { useNavigate, Navigate, useLocation } from "react-router";
+import { useLocalStorage } from "../hooks/localStorage";
+import HomeLoader from "../components/homeLoader/HomeLoader";
 
 const Root = () => {
     const navigate = useNavigate();
-    let [isloading, setIsLoading] = useState<boolean>(false);
+    let [isLoading, setLoading] = useState<boolean>(true);
+    const { getItem, setItem } = useLocalStorage();
+    const navigation = useLocation();
 
-    return <>
-        {isloading ? <p>loading</p> :
+    console.log(navigation.pathname);
+
+    const checkAuthToken = () => {
+        const authToken = getItem("auth");
+        if (!authToken) {
+            setLoading(false);
+            navigate('login');
+        } else {
+
+        }
+    };
+
+
+    useEffect(() => {
+        ///check if there is any auth token 
+        checkAuthToken();
+    }, [])
+
+
+    return <main className="w-full min-h-screen bg-[#131d2f]">
+        {isLoading ? <HomeLoader /> :
             <>
                 <Outlet />
             </>
         }
 
-    </>;
+    </main>;
 };
 
 export default Root;

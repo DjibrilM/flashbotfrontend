@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import ChatArea from "../../components/forms/ChatArea";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ResponseMessage from "../../components/response-message/response-message";
@@ -35,7 +35,7 @@ const ChatDetail = () => {
 
 
   return <>
-    <div style={listening ? {background:"#0006"}:{}} className=" h-full sideMenu-container overflow-auto relative rounded-lg flex flex-col p-5 w-full  text-white ">
+    <div style={listening ? { background: "#0006" } : {}} className=" h-full sideMenu-container overflow-auto relative rounded-lg flex flex-col p-5 w-full  text-white ">
       {listening ?
         <>
           <div className="h-full w-full">
@@ -57,6 +57,7 @@ const ChatDetail = () => {
     </div>
     {/* <div style={{ background: "linear-gradient(transparent,#131d2f,#131d2f)" }} className="w-full h-16  relative bottom-10"></div> */}
     <ChatArea
+      canRecord={browserSupportsSpeechRecognition}
       onStopRecording={() => {
         SpeechRecognition.stopListening();
         createSpeech();
