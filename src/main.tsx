@@ -11,8 +11,8 @@ import Root from './routes/Root';
 import Login from './routes/auth/Login';
 import Register from './routes/auth/register';
 import { Root as ChatRootPage } from './routes/chat/Root';
+import ResetPassword from './routes/auth/ResetPassword';
 import ChatDetail from './routes/chatDetail/ChatDetail';
-
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "forgotten-password",
-        element: <Login />
+        element: <ResetPassword />
       },
       {
         path: "login",

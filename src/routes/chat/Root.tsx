@@ -29,7 +29,7 @@ export const Root = () => {
 
     return <main className="bg-[#131d2f] flex flex-col   h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
-        <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  mx-5 ">
+        <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  custom-md:mx-5 ">
             <SideNavigation isOpen={sideMenuOpen} />
             <MobileSideMenu IsOpen={mobileSideMenuOpen} onClose={() => SetMobileSideMenuOpen(false)} />
             <section className="rounded-md w-full h-[calc(100vh-90px)] justify-between gap-4 flex flex-col">
