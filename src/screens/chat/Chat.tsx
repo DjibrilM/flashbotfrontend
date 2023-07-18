@@ -22,7 +22,7 @@ const WhiteRippleButton = createRipples({
 
 
 
-export const Root = () => {
+export const Chat = () => {
     const param = useParams();
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
     const [mobileSideMenuOpen, SetMobileSideMenuOpen] = useState<boolean>(false);
