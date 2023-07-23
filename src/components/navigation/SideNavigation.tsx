@@ -43,14 +43,16 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                 </li>
 
 
-                <li className="flex text-gray-200 mt-4  gap-4 items-center font-bold">
-                    <BiLogOut className="text-2xl" />
-                    <span>Logout</span>
-                </li>
+                <button>
+                    <li className="flex text-gray-200 mt-4 cursor-pointer  gap-4 items-center font-bold">
+                        <BiLogOut className="text-2xl" />
+                        <span>Logout</span>
+                    </li>
+                </button>
             </ul>
         </div>
 
-        <div style={{ maxWidth: "350px" } } className=" absolute bottom-0 w-full">
+        <div style={{ maxWidth: "350px" }} className=" absolute bottom-0 w-full">
             <RippleButton  >
                 <div className="bg-[#ffffff0b] max-w-[350px] w-full rounded-md overflow-hidden">
                     <button className="w-full h-16 font-bold text-white  active:shadow-lg  bg-[##ffffff19]">

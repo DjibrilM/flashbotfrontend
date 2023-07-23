@@ -13,6 +13,14 @@
     .sideMenu-container::-webkit-scrollbar-thumb {
         @apply bg-[#ffffff0b] rounded-md appearance-none
     }
+
+    .profile-list::-webkit-scrollbar {
+        @apply bg-transparent pr-2 w-2 appearance-none
+    }
+
+    .profile-list::-webkit-scrollbar-thumb {
+        @apply bg-[#413e3e77] rounded-md appearance-none
+    }
 }
 
 
