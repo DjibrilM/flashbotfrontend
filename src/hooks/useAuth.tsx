@@ -9,7 +9,11 @@ export const useAuth = () => {
         try {
             setLoading(true);
             setErrorMessage("");
-            const request = await axios.post("http://localhost:3000/auth/register", { ...data });
+            const request = await axios.post("http://localhost:3000/auth/register",
+                { ...data },
+                {
+                    withCredentials: true,
+                });
             setLoading(false);
             console.log(request);
             return request.data;

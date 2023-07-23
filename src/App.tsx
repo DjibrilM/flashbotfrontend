@@ -1,13 +1,14 @@
 import { Route, Routes } from "react-router";
+import { useNavigate } from "react-router";
 import { Chat } from "./screens/chat/Chat";
 import ChatDetail from "./screens/chatDetail/ChatDetail";
+import UnknownPage from "./screens/404/404";
 import Login from "./screens/auth/Login";
 import Register from "./screens/auth/register";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./hooks/localStorage";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../recoil/atoms/authentication";
-import { useAuth } from "./hooks/useAuth";
 import { clearItem } from "./hooks/localStorage";
 import { Triangle } from "react-loader-spinner";
 import axios from "axios";
@@ -17,7 +18,7 @@ function App() {
   let [isLoading, setLoading] = useState<boolean>(true);
   const { getItem } = useLocalStorage();
   const [authState, setAuthState] = useRecoilState(authenticationAtom);
-  const { sendRequest } = useAuth();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -32,17 +33,19 @@ function App() {
         try {
           const { data } = await axios.post("http://localhost:3000/auth/verifyToken", {
             token: getAuthenticationcrediantial.token,
-          });
+          }, { withCredentials: true });
 
-          console.log(data)
+          console.log(data);
+
           setAuthState({
             userId: data?.id,
-            userProfileImage: data?.userProfile,
+            userProfileImage: data?.profileImage,
             isLoggedIn: true
           });
+          setLoading(false);
+          navigate({ pathname: "/" });
 
         } catch (error) {
-          console.log(error);
           setAuthState({ ...authState, isLoggedIn: false });
           clearItem("authentication");
           setLoading(false);
@@ -73,6 +76,7 @@ function App() {
     ) :
       <>
         <Routes>
+          <Route path="*" element={<UnknownPage />} />
           {authState.isLoggedIn ?
             <Route path="/" Component={() => <Chat />}>
               <Route path="conversation/:id" Component={() => <ChatDetail />} />
