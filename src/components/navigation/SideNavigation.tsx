@@ -2,8 +2,13 @@ import { BsChatLeftDots } from "react-icons/bs";
 import ChatItem from "../chatItem/ChatItem";
 import { BiLogOut } from 'react-icons/bi';
 import { createRipples } from 'react-ripples'
-import React from "react";
+import React, { useState } from "react";
 import Switch from "../switch/Switch";
+import AlertPopUp from "../popup/AlertPopUp";
+import { useRecoilState } from "recoil";
+import { authenticationAtom } from "../../../recoil/atoms/authentication";
+import { useLocalStorage } from "../../hooks/localStorage";
+
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -17,6 +22,26 @@ interface Props {
 
 
 const SideNavigation: React.FC<Props> = ({ isOpen }) => {
+    const [alertPopupDescription, setAlertPopupDescription] = useState<string>("");
+    const [openAlertPopup, setOpenAlertPopup] = useState<boolean>(false);
+    const [AlertPopupLoading, _] = useState<boolean>(false);
+    const [alertPopupTitle, setAlertPopupTitle] = useState<string>("");
+    const [__, setAuthorizationData] = useRecoilState(authenticationAtom);
+    const { clearItem } = useLocalStorage()
+
+
+    const logout = () => {
+        
+        setAuthorizationData({
+            isLoggedIn: false,
+            userProfileImage: "",
+            userId: ""
+        });
+
+        clearItem("auth");
+    }
+
+
     return <aside style={isOpen ? { maxWidth: "350px" } : { maxWidth: "0px", }} className={`${!isOpen ? "overflow-hidden" : "flex"}  justify-between  flex-col custom-md:block hidden h-[calc(100vh-90px)] relative   duration-300  w-full`}>
 
         <nav className="w-full  h-[400px] overflow-hidden  bg-[#ffffff0b] rounded-md  ">
@@ -43,7 +68,21 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                 </li>
 
 
-                <button>
+                {/* alert popup */}
+                <AlertPopUp
+                    close={() => setOpenAlertPopup(false)}
+                    open={openAlertPopup}
+                    action={logout}
+                    title={alertPopupTitle}
+                    description={alertPopupDescription}
+                    Loading={AlertPopupLoading} />
+
+                <button
+                    onClick={() => {
+                        setOpenAlertPopup(true);
+                        setAlertPopupTitle("Are you sure ?")
+                        setAlertPopupDescription("You will be logged out from the application, do you really want to continue 🤔")
+                    }}>
                     <li className="flex text-gray-200 mt-4 cursor-pointer  gap-4 items-center font-bold">
                         <BiLogOut className="text-2xl" />
                         <span>Logout</span>
@@ -53,7 +92,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
         </div>
 
         <div style={{ maxWidth: "350px" }} className=" absolute bottom-0 w-full">
-            <RippleButton  >
+            <RippleButton >
                 <div className="bg-[#ffffff0b] max-w-[350px] w-full rounded-md overflow-hidden">
                     <button className="w-full h-16 font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
                         Create Chat

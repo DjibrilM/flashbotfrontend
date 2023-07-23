@@ -9,14 +9,13 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "./hooks/localStorage";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../recoil/atoms/authentication";
-import { clearItem } from "./hooks/localStorage";
 import { Triangle } from "react-loader-spinner";
 import axios from "axios";
 
 
 function App() {
   let [isLoading, setLoading] = useState<boolean>(true);
-  const { getItem } = useLocalStorage();
+  const { getItem, clearItem } = useLocalStorage();
   const [authState, setAuthState] = useRecoilState(authenticationAtom);
   const navigate = useNavigate();
 

@@ -29,11 +29,9 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
   const messageArea = useRef<HTMLTextAreaElement | any>();
   const [messageValue, setMessageValue] = useState<string>("");
 
-  console.log(canRecord);
 
   const updateHeight = (e: ChangeEvent | any) => {
     setMessageValue(e.target.value)
-    console.log(e.target.value)
     messageArea.current.style.height = "auto";
     messageArea.current.style.height = e.target.scrollHeight + 'px';
   }

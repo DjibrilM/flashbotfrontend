@@ -11,10 +11,11 @@ export const useLocalStorage = () => {
         const getItem = JSON.parse(localStorage.getItem(key)!);
         return getItem;
     };
-    return { getItem, setItem };
+
+    const clearItem = (identifier: string) => {
+        localStorage.removeItem(identifier);
+    }
+
+    return { getItem, setItem, clearItem };
 }
 
-
-export const clearItem = (identifier: string) => {
-    localStorage.removeItem(identifier);
-}

@@ -4,6 +4,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { authenticationAtom } from '../../../recoil/atoms/authentication';
 import { createRipples } from 'react-ripples';
+import AlertPopUp from '../popup/AlertPopUp';
 
 
 interface Props {
@@ -21,7 +22,7 @@ const AddButtonRipple = createRipples({
     color: "#ffffff25",
     during: 600,
     className: "rounded-full w-12 h-12 flex items-center justify-center mr-5"
-})
+});
 
 const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
     const { userProfileImage } = useRecoilValue(authenticationAtom);

@@ -66,7 +66,7 @@ const ChatDetail = () => {
       onStartRecording={() => {
         SpeechRecognition.startListening({
           continuous: true,
-          language: 'en-US'
+          language: 'en-US',
         })
       }} listening={listening} />
   </>
