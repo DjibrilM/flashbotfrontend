@@ -9,14 +9,13 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "./hooks/localStorage";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../recoil/atoms/authentication";
-import { clearItem } from "./hooks/localStorage";
 import { Triangle } from "react-loader-spinner";
 import axios from "axios";
 
 
 function App() {
   let [isLoading, setLoading] = useState<boolean>(true);
-  const { getItem } = useLocalStorage();
+  const { getItem, clearItem } = useLocalStorage();
   const [authState, setAuthState] = useRecoilState(authenticationAtom);
   const navigate = useNavigate();
 
@@ -26,6 +25,8 @@ function App() {
     const authentication = async () => {
       setLoading(true)
       const getAuthenticationcrediantial = getItem("auth");
+      console.log(getAuthenticationcrediantial);
+      
       if (!getAuthenticationcrediantial) {
         setAuthState({ ...authState, isLoggedIn: false });
         setLoading(false)
@@ -35,10 +36,7 @@ function App() {
             token: getAuthenticationcrediantial.token,
           }, { withCredentials: true });
 
-          console.log(data);
-
           setAuthState({
-            userId: data?.id,
             userProfileImage: data?.profileImage,
             isLoggedIn: true
           });

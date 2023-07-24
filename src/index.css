@@ -95,6 +95,7 @@
     animation: load8 1.1s infinite linear;
 }
 
+
 @-webkit-keyframes load8 {
     0% {
         -webkit-transform: rotate(0deg);
@@ -118,4 +119,3 @@
         transform: rotate(360deg);
     }
 }
-
