@@ -4,7 +4,6 @@ export const authenticationAtom = atom({
     key: "authentication-atom",
     default: {
         isLoggedIn: false,
-        userId: "",
         userProfileImage: "",
     }
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { GrView, } from 'react-icons/gr'
 import { BiHide } from 'react-icons/bi';
 
@@ -15,7 +15,7 @@ interface Props {
 const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMessage, touched, valid }) => {
     const [focused, setFocused] = useState<boolean>(false);
     const [hidePassword, setHidePassword] = useState<boolean>(true);
-
+    const input = useRef<HTMLInputElement | any>();
 
     const onFocus = () => {
         setFocused(true)
@@ -37,19 +37,26 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
         } else {
             return "text";
         }
-    }
+    };
+
+    useEffect(() => {
+        input.current?.defaultValue && setFocused(true);
+        input.current.value = input.current?.defaultValue;
+    }, []);
 
     return <>
-        <div className="flex gap-3">
+        <div className="flex gap-3 ">
             <div style={!valid && touched ? { borderWidth: "0.1px", borderColor: focused ? "red" : "red" } : { borderWidth: "0.1px", borderColor: focused ? "#311248" : "#13121233" }} className="w-full  flex items-center  h-[50px] relative rounded-md">
-                <p style={focused ? { bottom: "38px", color: !valid && touched ? "red" : "#311248", transform: " scale(0.7)" } : { bottom: "15px", color: !valid && touched ? "red" : "#311248", }} className="absolute text-[#131212ba] text-sm duration-200 ml-3 px-3 bg-[#fff]">{label}</p>
+                <p style={focused || input.current?.value ? { bottom: "38px", color: !valid && touched ? "red" : "#311248", transform: " scale(0.7)" } : { bottom: "15px", color: !valid && touched ? "red" : "#311248", }} className="absolute text-[#131212ba] text-sm duration-200 ml-3 px-3 bg-[#fff]">{label}</p>
                 <input
-                    onChange={(e) => onChange(e.target.value)}
+                    onLoad={() => console.log(input.current?.defaultValue)}
+                    ref={(element: HTMLInputElement) => input.current = element}
+                    onChange={() => onChange(input.current?.value)}
                     defaultValue={value}
                     type={type !== 'password' ? type : passwordTypeToggle()}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    className="w-full border-none  p-3 h-full outline-none bg-transparent" />
+                    className="w-full border-none cursor-pointer animated-input p-3 h-full outline-none bg-transparent" />
             </div>
             {type === 'password' &&
                 <button type="button" onClick={showPassword} className="bg-transparent rounded-md border-[#13121233] flex items-center justify-center active:bg-gray-100 border w-[100px]">

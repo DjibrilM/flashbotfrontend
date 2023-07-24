@@ -25,6 +25,8 @@ function App() {
     const authentication = async () => {
       setLoading(true)
       const getAuthenticationcrediantial = getItem("auth");
+      console.log(getAuthenticationcrediantial);
+      
       if (!getAuthenticationcrediantial) {
         setAuthState({ ...authState, isLoggedIn: false });
         setLoading(false)
@@ -34,10 +36,7 @@ function App() {
             token: getAuthenticationcrediantial.token,
           }, { withCredentials: true });
 
-          console.log(data);
-
           setAuthState({
-            userId: data?.id,
             userProfileImage: data?.profileImage,
             isLoggedIn: true
           });

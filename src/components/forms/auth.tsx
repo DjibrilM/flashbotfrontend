@@ -1,9 +1,11 @@
-import AnimatedInput from "../inputs/animatedInput"
-import { validateEmail } from "../../helpers/validation"
-import { validatePassword } from "../../helpers/validation"
-import React, { useState } from "react"
-import { createRipples } from 'react-ripples'
-import { Link } from "react-router-dom"
+import AnimatedInput from "../inputs/animatedInput";
+import { validateEmail } from "../../helpers/validation";
+import { validatePassword } from "../../helpers/validation";
+import React, { useState } from "react";
+import { createRipples } from 'react-ripples';
+import { Link } from "react-router-dom";
+import { RotatingLines } from "react-loader-spinner";
+
 
 const RippleButton = createRipples({
     color: "#ffffff1c",
@@ -38,7 +40,7 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
             value: "",
             errorMessage: "Invalid Email",
             touched: false,
-            id: new Date().toISOString(),
+            id: Math.random().toString(),
         },
         {
             type: "password",
@@ -46,7 +48,7 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
             errorMessage: "strong password, with symbols digits and uppercase characters ",
             value: "",
             touched: false,
-            id: new Date().toISOString(),
+            id: Math.random().toString(),
         }
     ];
 
@@ -62,12 +64,10 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
     const emailValidation = validateEmail(form[0].value);
     const passwordValidation = validatePassword(form[1].value);
 
-
     return <form className="mt-10">
         {form.map((el, index) => {
-            return <div className="max-w-[400px] mt-2 m-auto">
+            return <div key={el.id} className="max-w-[400px] mt-2 m-auto">
                 <AnimatedInput
-                    key={el.id}
                     valid={el.type === "email" ? emailValidation : passwordValidation}
                     errorMessage={el.errorMessage}
                     touched={el.touched}
@@ -79,8 +79,8 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
             </div>
         })}
 
-        <div className="max-w-[400px] relative bottom-4 text-sm  mt-2 m-auto">
-            <Link to="/forgotten-password" className=" top-4 relative text-blue-600"> <p>Forgotten password ? </p> </Link>
+        <div className="max-w-[400px] relative flex bottom-4  mt-2 m-auto">
+            <Link to="/forgotten-password" className=" top-4 relative text-sm text-blue-600"> <p className="">Forgotten password ? </p> </Link>
         </div>
 
         <div className="max-w-[400px] m-auto mt-5">
@@ -90,7 +90,9 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
                     onClick={(e) => {
                         e.preventDefault();
                         onSubmit({ email: form[0].value, password: form[1].value, valid: emailValidation && passwordValidation ? true : false })
-                    }} disabled={(emailValidation && passwordValidation) || loading ? false : true} className='w-full disabled:bg-gray-400 disabled:cursor-not-allowed py-4 cursor-pointer text-white flex items-center justify-center  bg-[#131d2f]'> {loading ? <div className="loader">Loading...</div> : submitButtonLabel} </button>
+                    }} disabled={!emailValidation || !passwordValidation || loading ? true : false} className='w-full disabled:bg-gray-200 disabled:cursor-not-allowed py-4 cursor-pointer text-white flex items-center justify-center  bg-[#131d2f]'>
+
+                    {loading ? <RotatingLines width="25" strokeColor="#777" /> : submitButtonLabel} </button>
             </RippleButton>
         </div>
 

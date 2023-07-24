@@ -8,6 +8,7 @@ import AlertPopUp from "../popup/AlertPopUp";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../../../recoil/atoms/authentication";
 import { useLocalStorage } from "../../hooks/localStorage";
+import { useNavigate } from "react-router";
 
 
 const RippleButton = createRipples({
@@ -28,6 +29,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     const [alertPopupTitle, setAlertPopupTitle] = useState<string>("");
     const [__, setAuthorizationData] = useRecoilState(authenticationAtom);
     const { clearItem } = useLocalStorage()
+    const navigate = useNavigate();
 
 
     const logout = () => {
@@ -35,10 +37,10 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
         setAuthorizationData({
             isLoggedIn: false,
             userProfileImage: "",
-            userId: ""
         });
 
         clearItem("auth");
+        navigate({ pathname: "/login" });
     }
 
 

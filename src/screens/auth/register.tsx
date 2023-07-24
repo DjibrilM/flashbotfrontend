@@ -59,9 +59,7 @@ const Register = () => {
 
         try {
             const request = await sendRequest(newUser);
-            console.log(request);
             setAuthState({
-                userId: request.id,
                 userProfileImage: request.userProfile,
                 isLoggedIn: true
             });

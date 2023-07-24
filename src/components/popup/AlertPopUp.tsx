@@ -33,7 +33,7 @@ const AlertPopUp: React.FC<Props> = ({ Loading, title, description, action, open
         <>
             <section style={!open ? {
                 display: "none"
-            } : {  display: "block" }} className='w-full p-4 bg-[#131d2fe5]   z-50 top-0 fixed  bottom-0'>
+            } : { display: "block" }} className='w-full p-4 bg-[#131d2fe5]   z-50 top-0 fixed  bottom-0'>
 
             </section>
 
