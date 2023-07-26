@@ -2,6 +2,9 @@ import ChatItem from "../chatItem/ChatItem";
 import { BsChatLeftDots } from "react-icons/bs";
 import { IoMdClose } from 'react-icons/io'
 import { createRipples } from "react-ripples";
+import chatsAtom from "../../../recoil/atoms/chats";
+import { useRecoilState } from "recoil";
+import { Chat as ChatType } from "../../../recoil/atoms/chats";
 
 
 const RippleButton = createRipples({
@@ -16,6 +19,8 @@ interface Props {
 }
 
 const MobileSideMenu: React.FC<Props> = ({ IsOpen, onClose }) => {
+    const [chatState, setChatState] = useRecoilState(chatsAtom);
+
     return <>
         <div style={!IsOpen ? { width: "0px" } : {}} onClick={() => onClose()} className="w-full custom-md:hidden   h-screen fixed z-20 top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-[#0000007f]"></div>
         <nav style={IsOpen ? { left: "0px" } : { left: "-400px" }} className="fixed z-30 duration-500 custom-md:hidden   w-full max-w-[350px] h-screen bg-[#1b263a] left-0 top-0 bottom-0 ">
@@ -31,17 +36,7 @@ const MobileSideMenu: React.FC<Props> = ({ IsOpen, onClose }) => {
             </div>
 
             <div style={{ height: "calc(100% - 160px)" }} className="w-full sideMenu-container inline-block mt-2 gap-3 overflow-auto  p-2 ">
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
-                <ChatItem />
+                {chatState.length > 0 ? chatState.map((chatElement: ChatType) => <ChatItem id={chatElement.id} messages={chatElement.messages} date={chatElement.createdAd} key={chatElement.id} />) : <>No chat created yet</>}
             </div>
             <div className="w-full p-2 flex  justify-center">
                 <RippleButton >

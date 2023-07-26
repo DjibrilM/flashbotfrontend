@@ -20,8 +20,6 @@ const WhiteRippleButton = createRipples({
     className: "w-[200px]  rounded-md "
 })
 
-
-
 export const Chat = () => {
     const param = useParams();
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);

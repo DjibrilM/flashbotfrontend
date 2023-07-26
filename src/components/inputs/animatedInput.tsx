@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GrView, } from 'react-icons/gr'
 import { BiHide } from 'react-icons/bi';
 
@@ -56,7 +56,7 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
                     type={type !== 'password' ? type : passwordTypeToggle()}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    className="w-full border-none cursor-pointer animated-input p-3 h-full outline-none bg-transparent" />
+                    className="w-full border-none animated-input p-3 h-full outline-none bg-transparent" />
             </div>
             {type === 'password' &&
                 <button type="button" onClick={showPassword} className="bg-transparent rounded-md border-[#13121233] flex items-center justify-center active:bg-gray-100 border w-[100px]">
