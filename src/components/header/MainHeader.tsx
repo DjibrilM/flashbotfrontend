@@ -1,5 +1,5 @@
 import { FiMenu } from 'react-icons/fi'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.svg'
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { authenticationAtom } from '../../../recoil/atoms/authentication';
@@ -26,7 +26,6 @@ const AddButtonRipple = createRipples({
 
 const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
     const { userProfileImage } = useRecoilValue(authenticationAtom);
-    console.log(userProfileImage);
 
     return <header className="h-16  items-center z-0 bg-[#ffffff0b] mb-3 flex justify-between">
         <div className="flex items-center gap-5 sm:px-4">

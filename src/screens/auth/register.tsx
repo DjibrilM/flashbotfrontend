@@ -1,5 +1,5 @@
 
-import logo from '../../assets/chatbot.png';
+import logo from '../../assets/logoBlack.svg';
 import { AuthForm } from '../../components/forms/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -78,7 +78,7 @@ const Register = () => {
     return <main className="w-full flex min-h-screen sm:pt-14 bg-[#131d2f] ">
         <section className='m-auto overflow-hidden relative max-w-[900px] p-2 pb-10 w-full min-h-screen sm:min-h-[600px] bg-white sm:rounded-md'>
             <div style={{ transform: !openProfile ? " " : "translateX(-900px)" }} className="w-full h-full absolute duration-200 pr-4">
-                <img src={logo} className='w-16 m-auto mt-6' alt="" />
+                <img src={logo} className='w-32 m-auto mt-6' alt="" />
                 <h1 className='text-center uppercase mt-3 text-gray-700 text-[18px] font-bold'>Register</h1>
                 <AuthForm
                     loading={loading}
@@ -88,7 +88,7 @@ const Register = () => {
                 />
 
                 <div className="max-w-[400px] m-auto mt-4">
-                    <p className='text-sm flex gap-1'>Already have an account <span><Link className='text-purple-400' to="/login" >login</Link></span></p>
+                    <p className='text-sm flex gap-1'>Already have an account <span><Link className='text-blue-500' to="/login" >login</Link></span></p>
                 </div>
                 <div className="max-w-[400px] m-auto mt-2">
                     {errorMessage && <p className='text-sm bg-red-200 line-clamp-1 border-red-300 border-2 p-3 text-red-500'>{errorMessage}</p>}

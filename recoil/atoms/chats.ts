@@ -16,3 +16,5 @@ const chatsAtom = atom<Chat[]>({
 })
 
 export default chatsAtom
+
+

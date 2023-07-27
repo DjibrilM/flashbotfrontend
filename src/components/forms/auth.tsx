@@ -6,7 +6,6 @@ import { createRipples } from 'react-ripples';
 import { Link } from "react-router-dom";
 import { RotatingLines } from "react-loader-spinner";
 
-
 const RippleButton = createRipples({
     color: "#ffffff1c",
     during: 600,

@@ -10,7 +10,6 @@ const RippleButton = createRipples({
 })
 
 
-
 const ChatDetail = () => {
   const {
     transcript,

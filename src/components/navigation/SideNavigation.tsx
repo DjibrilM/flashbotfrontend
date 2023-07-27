@@ -14,6 +14,7 @@ import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import { Chat as ChatType } from "../../../recoil/atoms/chats";
 import { formatDate } from "../../helpers/date";
+import ErrorPopup from "../popup/ErrorPopup";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -35,6 +36,8 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     const navigate = useNavigate();
     const [chatState, setChatState] = useRecoilState(chatsAtom);
     const [loading, setLoading] = useState<boolean>(false);
+    const [errorMeesage, setErrorMessage] = useState<string>("");
+    const [error, setError] = useState<boolean>(false);
 
     const logout = () => {
         setAuthorizationData({
@@ -68,16 +71,19 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
             const previousChats: ChatType[] = [...chatState];
             previousChats.unshift(newChat);
+            navigate("conversation/" + request.data._id,)
             setChatState([...previousChats]);
             setLoading(false);
 
         } catch (error) {
             setLoading(false)
-            console.log(error);
         }
+    };
 
-    }
-
+    // const loadUserChats = async () => {
+    //     const request = await axios.get("http://localhost:3000/conversation/chat", { headers: {} })
+    //     setChatState([...request.data]);
+    // }
 
     return <aside style={isOpen ? { maxWidth: "350px" } : { maxWidth: "0px", }} className={`${!isOpen ? "overflow-hidden" : "flex"}  justify-between  flex-col custom-md:block hidden h-[calc(100vh-90px)] relative   duration-300  w-full`}>
 
@@ -90,16 +96,15 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
             <div className="w-full pr-1 mt-1">
                 <div className="w-full overflow-auto sideMenu-container pr-1 pl-2 pt-3 h-[340px]">
-                    {chatState.length > 0 ?
-                        chatState.map((chatElement: ChatType) => <ChatItem
-                            key={chatElement.id}
-                            id={chatElement.id}
-                            date={chatElement.createdAd}
-                            messages={chatElement.messages} />)
-                        :
-                        <h3 className="text-center font-bold text-slate-200 mt-32">
-                            No Chat created <span className="text-2xl">📝</span>
-                        </h3>
+
+                    {
+                        chatState.map(chatElement => {
+                            return <ChatItem
+                                key={chatElement.id}
+                                id={chatElement.id}
+                                date={chatElement.createdAd}
+                                messages={chatElement.messages} />
+                        })
                     }
 
                 </div>
@@ -121,6 +126,12 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                     title={alertPopupTitle}
                     description={alertPopupDescription}
                     Loading={AlertPopupLoading} />
+
+                {/* error popup */}
+                <ErrorPopup
+                    errorMessage={errorMeesage}
+                    open={error}
+                    close={() => setError(false)} />
 
                 <button
                     onClick={() => {

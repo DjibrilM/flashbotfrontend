@@ -78,6 +78,8 @@ function App() {
           {authState.isLoggedIn ?
             <Route path="/" Component={() => <Chat />}>
               <Route path="conversation/:id" Component={() => <ChatDetail />} />
+              <Route path="H1" Component={() => <>a page</>} />
+
             </Route>
             :
             <>
