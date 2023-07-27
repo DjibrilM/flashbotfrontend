@@ -12,9 +12,6 @@ import { authenticationAtom } from "../recoil/atoms/authentication";
 import { Triangle } from "react-loader-spinner";
 import axios from "axios";
 
-
-
-
 function App() {
   let [isLoading, setLoading] = useState<boolean>(true);
   const { getItem, clearItem } = useLocalStorage();
