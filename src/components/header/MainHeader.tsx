@@ -1,10 +1,11 @@
 import { FiMenu } from 'react-icons/fi'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.svg'
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { authenticationAtom } from '../../../recoil/atoms/authentication';
 import { createRipples } from 'react-ripples';
 import AlertPopUp from '../popup/AlertPopUp';
+import { Link } from 'react-router-dom';
 
 
 interface Props {
@@ -26,7 +27,6 @@ const AddButtonRipple = createRipples({
 
 const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
     const { userProfileImage } = useRecoilValue(authenticationAtom);
-    console.log(userProfileImage);
 
     return <header className="h-16  items-center z-0 bg-[#ffffff0b] mb-3 flex justify-between">
         <div className="flex items-center gap-5 sm:px-4">
@@ -41,7 +41,9 @@ const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
                     <FiMenu className="text-white cursor-pointer text-2xl" />
                 </button>
             </RippleButton>
-            <img src={logo} className='w-32' alt="" />
+            <Link to={'/'}>
+                <img src={logo} className='w-32 cursor-pointer' alt="" />
+            </Link>
         </div>
 
         <div className="cursor-pointer">

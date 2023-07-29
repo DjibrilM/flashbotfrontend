@@ -119,3 +119,26 @@
         transform: rotate(360deg);
     }
 }
+
+.chatElement {
+    animation-duration: 1000ms;
+    transition-duration: 5000s;
+}
+
+
+.error-popup {
+    animation: popup 500ms ease-out;
+}
+
+@keyframes popup {
+    0% {
+        transform: translateY(-1000px);
+        display: none;
+    }
+
+    100% {
+        transform: translateY(0px);
+        display: block;
+    }
+
+}
