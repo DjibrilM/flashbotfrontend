@@ -8,7 +8,7 @@ import AlertPopUp from "../popup/AlertPopUp";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../../../recoil/atoms/authentication";
 import { useLocalStorage } from "../../hooks/localStorage";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import chatsAtom from '../../../recoil/atoms/chats';
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
@@ -38,6 +38,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMeesage, setErrorMessage] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
+    const navParams = useParams()
 
     const logout = () => {
         setAuthorizationData({
@@ -71,9 +72,9 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
             const previousChats: ChatType[] = [...chatState];
             previousChats.unshift(newChat);
-            navigate("conversation/" + request.data._id,)
             setChatState([...previousChats]);
             setLoading(false);
+            navigate("conversation/" + request.data._id,)
 
         } catch (error) {
             setLoading(false)
@@ -100,6 +101,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                     {
                         chatState.map(chatElement => {
                             return <ChatItem
+                                isActive={navParams.id === chatElement.id}
                                 key={chatElement.id}
                                 id={chatElement.id}
                                 date={chatElement.createdAd}
@@ -113,7 +115,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
         <div className="mt-10">
             <ul>
-                <li className="flex mt-6  text-gray-200 gap-4 pb-4 border-b border-[#ffffff0b]  items-center font-bold">
+                <li className="flex mt-6 w-full  text-gray-200 gap-8  pb-4 border-b border-[#ffffff0b]  items-center font-bold">
                     <span className="text-sm">Voice Reader</span>
                     <Switch />
                 </li>
@@ -152,7 +154,6 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                 <div className="bg-[#ffffff0b] max-w-[350px] w-full rounded-md overflow-hidden">
                     <button onClick={() => createChat()} className="w-full h-16 flex items-center justify-center font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
                         {loading ? <RotatingLines width="20" strokeColor="#ffff" /> : <span>Create Chat</span>}
-
                     </button>
                 </div>
             </RippleButton>

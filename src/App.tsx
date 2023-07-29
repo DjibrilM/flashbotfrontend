@@ -13,6 +13,7 @@ import { Triangle } from "react-loader-spinner";
 import axios from "axios";
 
 
+
 function App() {
   let [isLoading, setLoading] = useState<boolean>(true);
   const { getItem, clearItem } = useLocalStorage();
@@ -25,8 +26,7 @@ function App() {
     const authentication = async () => {
       setLoading(true)
       const getAuthenticationcrediantial = getItem("auth");
-      console.log(getAuthenticationcrediantial);
-      
+
       if (!getAuthenticationcrediantial) {
         setAuthState({ ...authState, isLoggedIn: false });
         setLoading(false)
@@ -41,7 +41,7 @@ function App() {
             isLoggedIn: true
           });
           setLoading(false);
-          navigate({ pathname: "/" });
+          navigate({ pathname: "/home" });
 
         } catch (error) {
           setAuthState({ ...authState, isLoggedIn: false });
@@ -76,10 +76,9 @@ function App() {
         <Routes>
           <Route path="*" element={<UnknownPage />} />
           {authState.isLoggedIn ?
-            <Route path="/" Component={() => <Chat />}>
+            <Route path="/home?" element={<Chat />}>
               <Route path="conversation/:id" Component={() => <ChatDetail />} />
               <Route path="H1" Component={() => <>a page</>} />
-
             </Route>
             :
             <>

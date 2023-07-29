@@ -36,7 +36,7 @@ const MobileSideMenu: React.FC<Props> = ({ IsOpen, onClose }) => {
             </div>
 
             <div style={{ height: "calc(100% - 160px)" }} className="w-full sideMenu-container inline-block mt-2 gap-3 overflow-auto  p-2 ">
-                {chatState.length > 0 ? chatState.map((chatElement: ChatType) => <ChatItem id={chatElement.id} messages={chatElement.messages} date={chatElement.createdAd} key={chatElement.id} />) : <>No chat created yet</>}
+                {chatState.length > 0 ? chatState.map((chatElement: ChatType) => <ChatItem isActive={false} id={chatElement.id} messages={chatElement.messages} date={chatElement.createdAd} key={chatElement.id} />) : <>No chat created yet</>}
             </div>
             <div className="w-full p-2 flex  justify-center">
                 <RippleButton >

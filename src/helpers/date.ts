@@ -7,5 +7,5 @@ export const formatDate = (date: string): string => {
     const getMonth = unformatedDate.toLocaleString('default', { month: 'long' });
     const getYearh = unformatedDate.getFullYear();
 
-    return `${getDay}/ ${getMonth} /${getYearh}`;
+    return `${getDay} / ${getMonth} / ${getYearh}`;
 }

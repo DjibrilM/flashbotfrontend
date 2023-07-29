@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import imageLogo from '../../assets/chatbot.png'
+import imageLogo from '../../assets/bolt.png'
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { BiCode } from 'react-icons/bi';
 
@@ -31,12 +31,10 @@ const ResponseMessage = () => {
 
     }, []);
 
-
-
     return <>
         <div className="mb-10">
-            <div className="flex gap-3   rounded-md ">
-                <div className="p-5 h-[3.5rem] border-2 border-[#ffffff27] flex items-center justify-center rounded-full bg-black ">
+            <div className="flex gap-3    rounded-md ">
+                <div className="p-5 h-[3.5rem] border-2 border-[#ffffff27] flex items-center justify-center rounded-md bg-black ">
                     <h1>D</h1>
                 </div>
 
@@ -47,11 +45,11 @@ const ResponseMessage = () => {
                 </div>
             </div>
 
-            <div className="mt-4 gap-4  bg-[#0006] p-2 max-w-[700px] w-full    rounded-md ">
-                <div className="w-[3rem] h-[3rem] border-2 border-[#ffffff27] flex items-center justify-center rounded-full bg-black ">
+            <div className="mt-4 gap-4  bg-[#0006] p-4 max-w-[700px] w-full    rounded-md ">
+                <div className="w-[3rem] h-[3rem] border-2 border-[#ffffff27] flex items-center justify-center rounded-md bg-black ">
                     <img src={imageLogo} className='w-5' alt="" />
                 </div>
-                <p className='p-2 text-sm leading-5'>{animatedMessage}  <strong style={isTyping ? { opacity: "1" } : { opacity: "0" }} className='typeIndicator'>|</strong></p>
+                <p className='p-2 text-sm leading-7 text-slate-200'>{animatedMessage}  <strong style={isTyping ? { opacity: "1" } : { opacity: "0" }} className='typeIndicator'>|</strong></p>
                 {/* <div className="rounded-md mt-7 overflow-hidden">
                     <div className="h-10 flex bg-gray-500 relative top-1 z-20 rounded-t-md  justify-between items-center w-full">
                         <div className="flex items-center ml-2">

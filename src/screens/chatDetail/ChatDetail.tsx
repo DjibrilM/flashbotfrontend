@@ -1,4 +1,4 @@
-
+import "regenerator-runtime/runtime";
 import ChatArea from "../../components/forms/ChatArea";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ResponseMessage from "../../components/response-message/response-message";
@@ -19,7 +19,6 @@ const ChatDetail = () => {
     listening,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-
 
   const createSpeech = async () => {
     try {

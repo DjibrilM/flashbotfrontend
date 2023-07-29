@@ -40,7 +40,8 @@ const Login = () => {
             navigate({ pathname: "/", }, { replace: true });
 
         } catch (error: any) {
-            setErrorMessage(error.response.data.message)
+            console.log(error);
+            setErrorMessage(error.response ? error.response.data.message : "something went wrong please try again 🙄")
         }
 
     }

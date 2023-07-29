@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { authenticationAtom } from '../../../recoil/atoms/authentication';
 import { createRipples } from 'react-ripples';
 import AlertPopUp from '../popup/AlertPopUp';
+import { Link } from 'react-router-dom';
 
 
 interface Props {
@@ -40,7 +41,9 @@ const MainHeader: React.FC<Props> = ({ openDesktopMenu, openMobileMenu }) => {
                     <FiMenu className="text-white cursor-pointer text-2xl" />
                 </button>
             </RippleButton>
-            <img src={logo} className='w-32' alt="" />
+            <Link to={'/'}>
+                <img src={logo} className='w-32 cursor-pointer' alt="" />
+            </Link>
         </div>
 
         <div className="cursor-pointer">

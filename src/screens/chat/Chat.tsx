@@ -6,7 +6,7 @@ import chatVector from '../../assets/live-chat.png';
 import MobileSideMenu from '../../components/navigation/MobileSideMenu';
 
 import { createRipples } from 'react-ripples'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -24,6 +24,10 @@ export const Chat = () => {
     const param = useParams();
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
     const [mobileSideMenuOpen, SetMobileSideMenuOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        console.log("going");
+    },[])
 
     return <main className="bg-[#131d2f] flex flex-col   h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
