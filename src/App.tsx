@@ -10,6 +10,7 @@ import { useLocalStorage } from "./hooks/localStorage";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../recoil/atoms/authentication";
 import { Triangle } from "react-loader-spinner";
+import ResetPassword from "./screens/auth/ResetPassword";
 import axios from "axios";
 
 
@@ -18,6 +19,10 @@ function App() {
   const { getItem, clearItem } = useLocalStorage();
   const [authState, setAuthState] = useRecoilState(authenticationAtom);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.addEventListener("offline", () => alert("you are currently offline"));
+  }, [])
 
 
   useEffect(() => {
@@ -37,7 +42,8 @@ function App() {
 
           setAuthState({
             userProfileImage: data?.profileImage,
-            isLoggedIn: true
+            isLoggedIn: true,
+            email: data.email
           });
           setLoading(false);
           navigate({ pathname: "/home" });
@@ -75,10 +81,13 @@ function App() {
         <Routes>
           <Route path="*" element={<UnknownPage />} />
           {authState.isLoggedIn ?
-            <Route path="/home?" element={<Chat />}>
-              <Route path="conversation/:id" Component={() => <ChatDetail />} />
-              <Route path="H1" Component={() => <>a page</>} />
-            </Route>
+            <>
+              <Route path="/home?" element={<Chat />}>
+                <Route path="conversation/:id" Component={() => <ChatDetail />} />
+              </Route>
+              <Route path="/update-password" Component={() => <ResetPassword />} />
+            </>
+
             :
             <>
               <Route path="/login?" Component={() => <Login />} />

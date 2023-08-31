@@ -3,7 +3,7 @@ import { atom } from "recoil";
 export interface Chat {
     id: string,
     createdAd: string,
-    messages: any[]
+    messages: any[],
 }
 
 export interface Chats {
@@ -12,7 +12,7 @@ export interface Chats {
 
 const chatsAtom = atom<Chat[]>({
     key: "usechat",
-    default: []
+    default: [],
 })
 
 export default chatsAtom

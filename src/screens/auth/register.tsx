@@ -1,7 +1,7 @@
 
 import logo from '../../assets/logoBlack.svg';
 import { AuthForm } from '../../components/forms/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { authenticationAtom } from '../../../recoil/atoms/authentication';
 import { useAuth } from '../../hooks/useAuth';
@@ -12,7 +12,9 @@ import { BiImageAdd } from 'react-icons/bi'
 import { IoChevronBackOutline } from 'react-icons/io5'
 import { useState } from 'react';
 import { useLocalStorage } from '../../hooks/localStorage';
-import { Navigate } from 'react-router-dom';
+import resgisterImage from '../../assets/add-contact.png';
+import { useNavigate } from 'react-router-dom';
+
 
 
 interface FormData {
@@ -35,7 +37,7 @@ const FinishButtonRipple = createRipples({
 })
 
 const Register = () => {
-    const [authState, setAuthState] = useRecoilState(authenticationAtom);
+    const [__, setAuthState] = useRecoilState(authenticationAtom);
 
     const { loading, sendRequest, errorMessage } = useAuth();
     const { response, setSelected, selectedProfileIndex } = useFetchProfile();
@@ -61,13 +63,15 @@ const Register = () => {
             const request = await sendRequest(newUser);
             setAuthState({
                 userProfileImage: request.userProfile,
-                isLoggedIn: true
+                isLoggedIn: true,
+                email: request.email
             });
             setItem({
                 token: request.authToken
             }, "auth");
 
-
+            //navigate after registering 
+            navigate('/');
         } catch (error) {
             console.log(error);
             setOpenProfile(false);
@@ -79,8 +83,9 @@ const Register = () => {
         <section className='m-auto overflow-hidden relative max-w-[900px] p-2 pb-10 w-full min-h-screen sm:min-h-[600px] bg-white sm:rounded-md'>
             <div style={{ transform: !openProfile ? " " : "translateX(-900px)" }} className="w-full h-full absolute duration-200 pr-4">
                 <img src={logo} className='w-32 m-auto mt-6' alt="" />
-                <h1 className='text-center uppercase mt-3 text-gray-700 text-[18px] font-bold'>Register</h1>
+                <img src={resgisterImage} alt="" className=' max-w-[60px] m-auto mt-5' />
                 <AuthForm
+                    type='register'
                     loading={loading}
                     key={"register"}
                     submitButtonLabel='Next'

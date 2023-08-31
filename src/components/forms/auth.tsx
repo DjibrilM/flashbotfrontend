@@ -16,6 +16,7 @@ interface Props {
     onSubmit: Function,
     submitButtonLabel: string,
     loading: boolean,
+    type: 'register' | 'login'
 }
 
 interface InputType {
@@ -30,7 +31,7 @@ interface InputType {
 
 
 
-export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading }) => {
+export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading, type }) => {
 
     const formInitialValue: InputType[] = [
         {
@@ -79,7 +80,7 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
         })}
 
         <div className="max-w-[400px] relative flex bottom-4  mt-2 m-auto">
-            <Link to="/forgotten-password" className=" top-4 relative text-sm text-blue-600"> <p className="">Forgotten password ? </p> </Link>
+            {type !== 'register' && <Link to="/forgotten-password" className=" top-4 relative text-sm text-blue-600"> <p className="">Forgotten Password ? </p> </Link>}
         </div>
 
         <div className="max-w-[400px] m-auto mt-5">

@@ -1,41 +1,40 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import logo from '../../assets/chatbot.png'
 import { createRipples } from 'react-ripples';
-import { useNavigate, useParams } from 'react-router';
-import { useNavigation, Navigation } from 'react-router';
+import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
     during: 600,
-    className: "w-full  rounded-md mb-4 cursor-pointer "
+    className: "w-full my-2  rounded-md cursor-pointer"
 })
 
 interface Props {
     id: string,
     messages: any[],
     date: string,
-    isActive: boolean
 }
 
-const ChatItem: React.FC<Props> = ({ id, date, messages, isActive }) => {
-    const navigate = useNavigate();
+const ChatItem: React.FC<Props> = ({ id, date, messages }) => {
     const params = useParams();
-    const [isCurrent, setIsCurrent] = useState<boolean>(false);
+    const element = useRef<HTMLDivElement>();
+
 
 
     useEffect(() => {
-        if (params.id == id) {
-            setIsCurrent(true);
+        if (params.id === id) {
+            element.current?.scrollIntoView({ behavior: "smooth" });
         }
     }, [params.id])
 
 
-    return <RippleButton>
+    return <RippleButton  >
         <NavLink
-            className={({ isActive }) => { return ` ${isActive && ' border-[#ffffff15]'} w-full border-2 border-transparent rounded-md` }}
+            ref={(el: HTMLDivElement | any) => element.current = el}
+            className={({ isActive }) => { return ` ${isActive ? ' border-[#ffffff1f] ' : 'border-transparent'} w-full border-2  rounded-md` }}
             to={'/conversation/' + id}>
             <div
                 id={id}
@@ -45,7 +44,7 @@ const ChatItem: React.FC<Props> = ({ id, date, messages, isActive }) => {
                         <img src={logo} alt="" className="w-5" />
                     </div>
                     <div className="">
-                        <h1 className="font-bold text-sm text-white"> {messages.length <= 0 ? <span>{id}</span> : <span>Elon musk</span>} </h1>
+                        <h1 className="text-sm text-white"> {messages?.length <= 0 ? <span>No message yet</span> : <span>Elon musk</span>} </h1>
                         <p className="text-[10px] mt-2 text-gray-100">{date}</p>
                     </div>
                 </div>

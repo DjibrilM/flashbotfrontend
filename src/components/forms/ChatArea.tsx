@@ -35,8 +35,8 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
     messageArea.current.style.height = "auto";
     messageArea.current.style.height = e.target.scrollHeight + 'px';
   }
-  return <div className="w-full border-t pt-2 px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
-    <div className="flex w-[80%] items-center   rounded-md  bg-[#ffffff0b]">
+  return <div className="w-full border-t pt-2   px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
+    <div className="flex w-[80%] pr-1 p-1 items-center   rounded-md  bg-[#ffffff0b]">
       <textarea
         value={messageValue}
         ref={(element: HTMLTextAreaElement) => messageArea.current = element}
@@ -44,12 +44,14 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
         onChange={updateHeight}
         placeholder="Tell me something...."
         className="p-4 text-sm  overflow-hidden w-full outline-none text-white resize-none h-full bg-transparent"></textarea>
+
+      <RippleButton>
+        <button type="button" className="border outline-none flex items-center justify-center text-2xl text-[#ffffff89] bg-[#ffffff0b] rounded-md outline border-[#ffffff25]  w-20">
+          <IoSendOutline />
+        </button>
+      </RippleButton>
     </div>
-    <RippleButton>
-      <button type="button" className="border outline-none flex items-center justify-center text-2xl text-[#ffffff89] bg-[#ffffff0b] rounded-md outline border-[#ffffff25]  w-20">
-        <IoSendOutline />
-      </button>
-    </RippleButton>
+
 
     <div className={`relative ${!canRecord && "record-btn-container"}`}>
       {!canRecord &&

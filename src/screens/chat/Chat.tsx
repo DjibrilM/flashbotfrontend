@@ -6,7 +6,7 @@ import chatVector from '../../assets/live-chat.png';
 import MobileSideMenu from '../../components/navigation/MobileSideMenu';
 
 import { createRipples } from 'react-ripples'
-import { useEffect, useState } from "react";
+import {useState } from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -25,20 +25,16 @@ export const Chat = () => {
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
     const [mobileSideMenuOpen, SetMobileSideMenuOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-        console.log("going");
-    },[])
-
-    return <main className="bg-[#131d2f] flex flex-col   h-screen  w-full" >
+    return <main className="bg-[#131d2f] flex flex-col     h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
         <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  custom-md:mx-5 ">
             <SideNavigation isOpen={sideMenuOpen} />
             <MobileSideMenu IsOpen={mobileSideMenuOpen} onClose={() => SetMobileSideMenuOpen(false)} />
-            <section className="rounded-md w-full h-[calc(100vh-90px)] justify-between gap-4 flex flex-col">
+            <section className="rounded-md w-full  h-[calc(100vh-10px)]  flex flex-col">
                 <Outlet />
                 {!param.id &&
                     <>
-                        <div className="max-w-[500px] w-full bg-white m-auto  h-[300px] rounded-lg  ">
+                        <div className="sm:max-w-[500px] sm:w-full bg-white mx-4 sm:m-auto  h-[300px] rounded-lg  ">
                             <img className="w-32 pt-10 m-auto" src={chatVector} alt="" />
                             <h1 className="bg-red text-center  mt-3  text-gray-700">No chat selected yet <span className="text-3xl">🤖</span> </h1>
 

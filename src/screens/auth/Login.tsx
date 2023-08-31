@@ -36,6 +36,7 @@ const Login = () => {
             setAuthState({
                 isLoggedIn: true,
                 userProfileImage: request.data.profileImage,
+                email: request.data.email,
             });
             navigate({ pathname: "/", }, { replace: true });
 
@@ -50,7 +51,13 @@ const Login = () => {
         <section className='m-auto max-w-[900px] p-2 pb-10 w-full min-h-screen sm:min-h-[550px] bg-white sm:rounded-md'>
             <img src={logo} alt="" className='w-36 sm:w-42 mb-10 pt-20 sm:pt-7 m-auto' />
             <p className='text-center mt-2 text-gray-700'>Powered🔥 By ChatGpt</p>
-            <AuthForm loading={false} key="login" submitButtonLabel='Login' onSubmit={loginUser} />
+            <AuthForm
+                type='login'
+                loading={false}
+                key="login"
+                submitButtonLabel='Login'
+                onSubmit={loginUser}
+            />
             <div className="max-w-[400px] m-auto mt-4">
                 <p className='text-sm flex gap-1 cursor-pointer'>Don't have an account yet <span><Link className='text-blue-500' to="/register" >Register</Link></span></p>
             </div>

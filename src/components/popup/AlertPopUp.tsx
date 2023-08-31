@@ -1,8 +1,10 @@
 
 import { createRipples } from "react-ripples";
 import { RotatingLines } from "react-loader-spinner";
-import { TbInfoCircle } from 'react-icons/tb';
+import { BsFillExclamationTriangleFill } from 'react-icons/bs';
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { scalPopupAnimate, scalPopupInitial } from "../../framermotion/animationVariant";
 
 const RippleButton = createRipples({
     color: "#0000001f",
@@ -31,25 +33,27 @@ const AlertPopUp: React.FC<Props> = ({ Loading, title, description, action, open
     return (
 
         <>
-            <section style={!open ? {
+            <section
+                onClick={()=> alert('hello it is me')}
+                style={!open ? {
                 display: "none"
             } : { display: "block" }} className='w-full p-4 bg-[#131d2fe5]   z-50 top-0 fixed  bottom-0'>
 
             </section>
 
-            <div style={!open ? { transform: "translateY(-1000px)" } : { transform: "translateY(0px)" }} className="w-full  duration-200 fixed top-0  z-50">
-                <div className="max-w-[600px] duration-300 flex flex-col overflow-hidden shadow-lg max-h-[400px]  h-full  bg-white m-auto mt-16 rounded-md " >
+            {open && <motion.div transition={{ type: "spring", duration:0.4}} initial={scalPopupInitial} animate={scalPopupAnimate} className="w-full   fixed top-5   z-50">
+                <div className="max-w-[500px] duration-300 flex flex-col overflow-hidden shadow-lg max-h-[300px]  h-full   bg-white m-auto mt-16 rounded-md " >
                     <div className=" basis-4/5 w-ful">
-                        <div className="w-full flex items-center justify-center pt-8">
-                            <TbInfoCircle className=" text-center text-4xl text-slate-500" />
+                        <div className="w-16 h-16 bg-[#eb8d8d5c]  m-auto mt-5 flex justify-center rounded-full  items-center">
+                            <BsFillExclamationTriangleFill className=" text-center text-2xl text-red-500" />
                         </div>
 
 
-                        <h1 className="text-center text-[1.2rem] font-semibold text-slate-700 mt-4">{title}</h1>
-                        <p className=" text-slate-500 text-center m-4 leading-7">{description}</p>
+                        <h1 className="text-center font-semibold text-slate-700 mt-2">{title}</h1>
+                        <p className=" text-slate-500 text-sm text-center m-4 mb-7 leading-7">{description}</p>
                     </div>
 
-                    <div className="w-full  flex h-20 border-t border-[#0000001f] ">
+                    <div className="w-full text-sm  flex h-16 border-t border-[#0000001f] ">
                         <RippleButton onClick={() => {
                             const closeTimeout = setTimeout(() => {
                                 clearTimeout(closeTimeout);
@@ -75,7 +79,7 @@ const AlertPopUp: React.FC<Props> = ({ Loading, title, description, action, open
 
                     </div>
                 </div>
-            </div>
+            </motion.div>}
         </>
     )
 }
