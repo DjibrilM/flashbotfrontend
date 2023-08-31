@@ -5,5 +5,6 @@ export const authenticationAtom = atom({
     default: {
         isLoggedIn: false,
         userProfileImage: "",
+        email: ""
     }
 });

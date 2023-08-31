@@ -2,19 +2,22 @@ import { BsChatLeftDots } from "react-icons/bs";
 import ChatItem from "../chatItem/ChatItem";
 import { BiLogOut } from 'react-icons/bi';
 import { createRipples } from 'react-ripples'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Switch from "../switch/Switch";
 import AlertPopUp from "../popup/AlertPopUp";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authenticationAtom } from "../../../recoil/atoms/authentication";
 import { useLocalStorage } from "../../hooks/localStorage";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import chatsAtom from '../../../recoil/atoms/chats';
-import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
-import { Chat as ChatType } from "../../../recoil/atoms/chats";
-import { formatDate } from "../../helpers/date";
 import ErrorPopup from "../popup/ErrorPopup";
+import { useFetchState } from "../../hooks/useFetchChats";
+import { useCreateChat } from "../../hooks/useCreateChat";
+import uiState from '../../../recoil/atoms/sideNavigation';
+import { BsEmojiFrown } from 'react-icons/bs';
+import { fetchChatErrorMessage } from "../../constants";
+import { TbMessage2Cog } from 'react-icons/tb';
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -32,90 +35,123 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     const [AlertPopupLoading, _] = useState<boolean>(false);
     const [alertPopupTitle, setAlertPopupTitle] = useState<string>("");
     const [__, setAuthorizationData] = useRecoilState(authenticationAtom);
-    const { clearItem, getItem } = useLocalStorage()
+    const { clearItem } = useLocalStorage()
     const navigate = useNavigate();
-    const [chatState, setChatState] = useRecoilState(chatsAtom);
-    const [loading, setLoading] = useState<boolean>(false);
+    const chatState = useRecoilValue(chatsAtom);
     const [errorMeesage, setErrorMessage] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
-    const navParams = useParams()
+    const sideMenuUiState = useRecoilValue(uiState);
+    const { fetchLoading, fetchChats } = useFetchState();
+    const { createChatLoading, createChat } = useCreateChat();
 
     const logout = () => {
         setAuthorizationData({
             isLoggedIn: false,
             userProfileImage: "",
+            email: ""
         });
 
         clearItem("auth");
         navigate({ pathname: "/login" });
     }
 
-    const createChat = async () => {
-        setLoading(true);
-        try {
-            const request = await axios.post("http://localhost:3000/conversation/chat",
-                {
 
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: "Bearer " + getItem("auth").token,
-                    }
-                })
+    const fetchChatsFn = () => {
+        setErrorMessage("");
+        setError(false);
 
-            const newChat: ChatType = {
-                id: request.data._id,
-                createdAd: formatDate(request.data.createdAt),
-                messages: []
-            };
+        fetchChats().catch((error: any) => {
+            setErrorMessage(error.message);
+            setError(true);
+        })
+    };
 
-            const previousChats: ChatType[] = [...chatState];
-            previousChats.unshift(newChat);
-            setChatState([...previousChats]);
-            setLoading(false);
-            navigate("conversation/" + request.data._id,)
+    useEffect(() => {
+        if (sideMenuUiState.itemCount - chatState.length > 0 || sideMenuUiState.itemCount === 0) {
+            fetchChatsFn();
+        }
 
-        } catch (error) {
-            setLoading(false)
+    }, []);
+
+    const createChatFn = async () => {
+        createChat().catch((error: any) => {
+            setError(true);
+            setErrorMessage(error.message);
+        });
+
+    }
+
+
+    const onScroll = (scrollableDiv: any) => {
+        if (fetchLoading || createChatLoading) return;
+
+        const scrollPosition = scrollableDiv.target.scrollTop;
+        const scrollHeight = scrollableDiv.target.scrollHeight;
+        const clientHeight = scrollableDiv.target.clientHeight;
+
+        if (scrollPosition + clientHeight + 2 >= scrollHeight && sideMenuUiState.itemCount - chatState.length > 0) {
+            fetchChats()
         }
     };
 
-    // const loadUserChats = async () => {
-    //     const request = await axios.get("http://localhost:3000/conversation/chat", { headers: {} })
-    //     setChatState([...request.data]);
-    // }
-
-    return <aside style={isOpen ? { maxWidth: "350px" } : { maxWidth: "0px", }} className={`${!isOpen ? "overflow-hidden" : "flex"}  justify-between  flex-col custom-md:block hidden h-[calc(100vh-90px)] relative   duration-300  w-full`}>
-
-        <nav className="w-full  h-[400px] overflow-hidden  bg-[#ffffff0b] rounded-md  ">
+    return <aside style={isOpen ? { maxWidth: "350px" } : { maxWidth: "0px", }} className={`${!isOpen ? "overflow-hidden" : "flex"}   justify-between  flex-col custom-md:block hidden h-[calc(100vh-90px)] mt-20 relative    duration-300  w-full`}>
+        <nav className="w-full relative   h-[400px] overflow-hidden  bg-[#ffffff0b] rounded-md  ">
 
             <div className="w-full gap-2 text-white items-center flex pl-5 h-14 border-b bg-[#ffffff19] border-[#ffffff19]">
                 <BsChatLeftDots />
                 <h1 className="text-[18px] font-bold">Your Chats</h1>
             </div>
 
-            <div className="w-full pr-1 mt-1">
-                <div className="w-full overflow-auto sideMenu-container pr-1 pl-2 pt-3 h-[340px]">
+            <div className="w-full pr-1 mt-1  ">
+                <div onScroll={onScroll} className="w-full pb-12 overflow-auto sideMenu-container pr-2 pl-2 pt-3 h-[340px]">
 
-                    {
-                        chatState.map(chatElement => {
-                            return <ChatItem
-                                isActive={navParams.id === chatElement.id}
-                                key={chatElement.id}
-                                id={chatElement.id}
-                                date={chatElement.createdAd}
-                                messages={chatElement.messages} />
-                        })
+                    <>
+                        {errorMeesage.length < 1 &&
+                            chatState.map((chatElement, index) => {
+                                return <ChatItem
+                                    key={index}
+                                    id={chatElement.id}
+                                    date={chatElement.createdAd}
+                                    messages={chatElement.messages} />
+                            })
+                        }
+                    </>
+
+                    {errorMeesage === fetchChatErrorMessage && <div className="w-full mt-10 flex-col  flex justify-center">
+                        <div className=" w-full flex justify-center mb-4">
+                            <BsEmojiFrown className=" text-center text-2xl text-slate-50" />
+                        </div>
+                        <p className=" text-slate-100 text-sm text-center">Failed to load your chat! Please try again</p>
+                        <button onClick={() => fetchChatsFn()} className=" mt-10 w-24 text-slate-100 m-auto p-2 rounded-md  bg-slate-700 active:bg-slate-600">
+                            Try Again
+                        </button>
+                    </div>
                     }
+
+                    {!errorMeesage && !error && chatState.length < 1 && !fetchLoading && <div className=" w-full flex flex-col text-center justify-center mt-10 text-slate-200">
+                        <h1 className="">No chat yet </h1>
+                        <div className="w-full flex items-center justify-center">
+                            <TbMessage2Cog className="text-3xl mt-4" />
+                        </div>
+                    </div>
+                    }
+
+                    {fetchLoading && (
+                        <div className="w-full pt-5  pb-4 flex items-center justify-center">
+                            <RotatingLines width="20" strokeColor="#ffff" />
+                        </div>
+                    )}
 
                 </div>
             </div>
+
+            <div className="h-5 absolute bottom-0  w-full bg-slate-800 border-t border-[#ffffff0a]">
+            </div>
         </nav>
 
-        <div className="mt-10">
-            <ul>
-                <li className="flex mt-6 w-full  text-gray-200 gap-8  pb-4 border-b border-[#ffffff0b]  items-center font-bold">
+        <div className="mt-10  ">
+            <ul className="">
+                <li className="flex  relative bottom-6 w-full  text-gray-200 gap-8 pb-3  border-b border-[#ffffff0b]  items-center font-bold">
                     <span className="text-sm">Voice Reader</span>
                     <Switch />
                 </li>
@@ -139,9 +175,9 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                     onClick={() => {
                         setOpenAlertPopup(true);
                         setAlertPopupTitle("Are you sure ?")
-                        setAlertPopupDescription("You will be logged out from the application, do you really want to continue 🤔")
+                        setAlertPopupDescription("You will be logged mt-4 out from the application, do you really want to continue 🤔")
                     }}>
-                    <li className="flex text-gray-200 mt-4 cursor-pointer  gap-4 items-center font-bold">
+                    <li className="flex text-gray-200 mt-2 cursor-pointer  gap-4 items-center font-bold">
                         <BiLogOut className="text-2xl" />
                         <span>Logout</span>
                     </li>
@@ -152,8 +188,8 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
         <div style={{ maxWidth: "350px" }} className=" absolute bottom-0 w-full">
             <RippleButton >
                 <div className="bg-[#ffffff0b] max-w-[350px] w-full rounded-md overflow-hidden">
-                    <button onClick={() => createChat()} className="w-full h-16 flex items-center justify-center font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
-                        {loading ? <RotatingLines width="20" strokeColor="#ffff" /> : <span>Create Chat</span>}
+                    <button onClick={() => createChatFn()} className="w-full h-14 flex items-center justify-center font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
+                        {createChatLoading ? <RotatingLines width="20" strokeColor="#ffff" /> : <span>Create Chat</span>}
                     </button>
                 </div>
             </RippleButton>

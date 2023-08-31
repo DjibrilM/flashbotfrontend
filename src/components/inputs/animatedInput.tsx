@@ -16,6 +16,8 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
     const [focused, setFocused] = useState<boolean>(false);
     const [hidePassword, setHidePassword] = useState<boolean>(true);
     const input = useRef<HTMLInputElement | any>();
+    const [updates, setUpdated] = useState<boolean>(false);
+    const [elementValue, setElementValue] = useState<string>("");
 
     const onFocus = () => {
         setFocused(true)
@@ -44,15 +46,21 @@ const AnimatedInput: React.FC<Props> = ({ label, type, value, onChange, errorMes
         input.current.value = input.current?.defaultValue;
     }, []);
 
+
+    useEffect(() => {
+        setUpdated(!updates);
+        setElementValue(value);
+    }, [value])
+
     return <>
         <div className="flex gap-3 ">
-            <div style={!valid && touched ? { borderWidth: "0.1px", borderColor: focused ? "red" : "red" } : { borderWidth: "0.1px", borderColor: focused ? "#311248" : "#13121233" }} className="w-full  flex items-center  h-[50px] relative rounded-md">
+            <div style={!valid && touched && elementValue.length > 0 ? { borderWidth: "0.1px", borderColor: focused ? "red" : "red" } : { borderWidth: "0.1px", borderColor: focused ? "#311248" : "#13121233" }} className="w-full  flex items-center  h-[50px] relative rounded-md">
                 <p style={focused || input.current?.value ? { bottom: "38px", color: !valid && touched ? "red" : "#311248", transform: " scale(0.7)" } : { bottom: "15px", color: !valid && touched ? "red" : "#311248", }} className="absolute text-[#131212ba] text-sm duration-200 ml-3 px-3 bg-[#fff]">{label}</p>
                 <input
                     onLoad={() => console.log(input.current?.defaultValue)}
                     ref={(element: HTMLInputElement) => input.current = element}
                     onChange={() => onChange(input.current?.value)}
-                    defaultValue={value}
+                    defaultValue={elementValue}
                     type={type !== 'password' ? type : passwordTypeToggle()}
                     onFocus={onFocus}
                     onBlur={onBlur}
