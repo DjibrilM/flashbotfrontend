@@ -37,7 +37,7 @@ const AlertPopUp: React.FC<Props> = ({ Loading, title, description, action, open
                 onClick={()=> alert('hello it is me')}
                 style={!open ? {
                 display: "none"
-            } : { display: "block" }} className='w-full p-4 bg-[#131d2fe5]   z-50 top-0 fixed  bottom-0'>
+            } : { display: "block" }} className='w-full p-4 bg-[#131d2fe5] left-0   z-50 top-0 fixed  bottom-0'>
 
             </section>
 

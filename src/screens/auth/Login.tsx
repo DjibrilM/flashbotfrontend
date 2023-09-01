@@ -29,7 +29,7 @@ const Login = () => {
                     email: form.email,
                     password: form.password
                 }, {
-                withCredentials: true,
+                    withCredentials: true,
             });
             setErrorMessage("");
             setItem({ token: request.data.authToken }, "auth");
