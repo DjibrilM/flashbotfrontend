@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import { IoSendOutline } from 'react-icons/io5';
 import { createRipples } from "react-ripples";
 import { BiMicrophone } from 'react-icons/bi'
 import { ImChrome } from 'react-icons/im';
+import { RotatingLines } from 'react-loader-spinner';
+import { VscSend } from 'react-icons/vsc'
 
 const RippleButton = createRipples({
   color: "#ffffff0b",
@@ -20,23 +21,24 @@ interface Props {
   listening: boolean,
   onStartRecording: Function,
   onStopRecording: Function,
-  canRecord: boolean
+  canRecord: boolean,
+  sendingLoading: boolean,
+  sendMessage: Function,
+  onchange:(e:string)=> void,
 }
 
-
-
-const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecording, canRecord }) => {
+const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecording, canRecord, sendingLoading, sendMessage,onchange }) => {
   const messageArea = useRef<HTMLTextAreaElement | any>();
   const [messageValue, setMessageValue] = useState<string>("");
-
 
   const updateHeight = (e: ChangeEvent | any) => {
     setMessageValue(e.target.value)
     messageArea.current.style.height = "auto";
     messageArea.current.style.height = e.target.scrollHeight + 'px';
+    onchange(e.target.value);
   }
   return <div className="w-full border-t pt-2   px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
-    <div className="flex w-[80%] pr-1 p-1 items-center   rounded-md  bg-[#ffffff0b]">
+    <div className="flex w-[80%] pr-[5px] p-1 items-center   rounded-md  bg-[#ffffff0b]">
       <textarea
         value={messageValue}
         ref={(element: HTMLTextAreaElement) => messageArea.current = element}
@@ -46,8 +48,12 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
         className="p-4 text-sm  overflow-hidden w-full outline-none text-white resize-none h-full bg-transparent"></textarea>
 
       <RippleButton>
-        <button type="button" className="border outline-none flex items-center justify-center text-2xl text-[#ffffff89] bg-[#ffffff0b] rounded-md outline border-[#ffffff25]  w-20">
-          <IoSendOutline />
+        <button
+          disabled={messageValue.trim().length > 5 ? false : true}
+          onClick={() => sendMessage()}
+          type="button"
+          className="border outline-none flex items-center justify-center text-[24px] text-[#ffffff89] bg-[#ffffff0b] disabled:cursor-not-allowed disabled:opacity-[0.3]  rounded-md outline border-[#ffffff25]  w-16">
+          {!sendingLoading ? <VscSend /> : <RotatingLines strokeColor="#ccc" width="18" />}
         </button>
       </RippleButton>
     </div>
@@ -62,6 +68,7 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
       }
       <RecordRippleButton>
         <button
+        
           disabled={canRecord === false ? true : false}
           onClick={() => {
             if (listening) {
