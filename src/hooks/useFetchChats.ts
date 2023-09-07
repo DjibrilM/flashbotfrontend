@@ -34,7 +34,7 @@ export const useFetchState = (): returnedValue => {
                     return {
                         id: chat._id,
                         createdAd: formatDate(chat.createdAt),
-                        messages: chat.messages
+                        messages: [...chat.messages.map((message: []) => ({ ...message, loaded: true }))]
                     }
                 });
 
@@ -43,6 +43,7 @@ export const useFetchState = (): returnedValue => {
                 setChatState([...emptyArray]);
                 setChatState([...previousChats, ...formatedData]);
 
+                
                 const previousPagination = uiAtom.pagination;
                 if (request.data.chats?.length > 1) setUiAtom({ ...uiAtom, itemCount: request.data.itemsCount, pagination: previousPagination + 1 });
 

@@ -143,8 +143,32 @@
 
 }
 
-.preview{
+.preview {
     background: transparent;
     border-radius: 0px;
     margin: 30px 0px;
+}
+
+
+
+.loadingCard {
+    border-radius: 5px;
+    transition: 0.6s ease;
+    background-color: #212d3f2f;
+    animation: linear loadingCardAnimation 2000ms infinite ;
+    border: 0.5px solid #ffffff26;
+}
+
+@keyframes loadingCardAnimation {
+   0%{
+    opacity: 0.3;
+   }
+
+   50%{
+    opacity: 1;
+   }
+
+   100%{
+    opacity: 0.3;
+   }
 }
