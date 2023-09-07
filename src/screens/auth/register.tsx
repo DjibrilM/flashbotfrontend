@@ -73,7 +73,6 @@ const Register = () => {
             //navigate after registering 
             navigate('/');
         } catch (error) {
-            console.log(error);
             setOpenProfile(false);
         }
 

@@ -37,7 +37,7 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
     messageArea.current.style.height = e.target.scrollHeight + 'px';
     onchange(e.target.value);
   }
-  return <div className="w-full border-t pt-2   px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
+  return <div className="w-full border-t pt-2 sm:bg-transparent    px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
     <div className="flex w-[80%] pr-[5px] p-1 items-center   rounded-md  bg-[#ffffff0b]">
       <textarea
         value={messageValue}
@@ -68,7 +68,6 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
       }
       <RecordRippleButton>
         <button
-        
           disabled={canRecord === false ? true : false}
           onClick={() => {
             if (listening) {

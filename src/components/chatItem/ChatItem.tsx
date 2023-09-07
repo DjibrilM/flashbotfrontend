@@ -43,6 +43,7 @@ const ChatItem: React.FC<Props> = ({ id, date, messages }) => {
         }
     }, [params.id])
 
+
     const deletChat = async () => {
 
         try {
@@ -70,10 +71,9 @@ const ChatItem: React.FC<Props> = ({ id, date, messages }) => {
             setErrorModal(true);
             setOpenModal(false);
         };
-
-
     }
 
+   
     return <>
         <div className=' flex items-center gap-2'>
             <RippleButton  >
@@ -92,7 +92,7 @@ const ChatItem: React.FC<Props> = ({ id, date, messages }) => {
                                 <img src={logo} alt="" className="w-5" />
                             </div>
                             <div className="">
-                                <h1 className="text-sm text-white"> {messages?.length <= 0 ? <span>No message yet</span> : <span>Elon musk</span>} </h1>
+                                <h1 className="text-[13px] text-white"> {messages?.length <= 0 ? <span>No message yet</span> : <span>{messages[0].prompt.split('').slice(0, 25).join("")}...</span>} </h1>
                                 <p className="text-[10px] mt-2 text-gray-100">{date}</p>
                             </div>
                         </div>

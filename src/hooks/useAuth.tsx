@@ -16,12 +16,11 @@ export const useAuth = () => {
                     withCredentials: true,
                 });
             setLoading(false);
-            console.log(request);
             return request.data;
         } catch (error: any) {
             setLoading(false);
-            setErrorMessage(error.response.data.message);
-            throw (error);
+            setErrorMessage(error.response ? error.response.data.message : 'something went wrong please try again🔔');
+            throw new Error(error.message);
         }
     }
 
