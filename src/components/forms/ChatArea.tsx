@@ -3,7 +3,10 @@ import { createRipples } from "react-ripples";
 import { BiMicrophone } from 'react-icons/bi'
 import { ImChrome } from 'react-icons/im';
 import { RotatingLines } from 'react-loader-spinner';
-import { VscSend } from 'react-icons/vsc'
+import { VscSend } from 'react-icons/vsc';
+import axios from "axios";
+import { useLocalStorage } from "../../hooks/localStorage";
+import { useParams } from "react-router";
 
 const RippleButton = createRipples({
   color: "#ffffff0b",
@@ -24,12 +27,16 @@ interface Props {
   canRecord: boolean,
   sendingLoading: boolean,
   sendMessage: Function,
-  onchange:(e:string)=> void,
+  onchange: (e: string) => void,
+  renderCreatedMessage: (message:any) => void
 }
 
-const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecording, canRecord, sendingLoading, sendMessage,onchange }) => {
+const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecording, canRecord, sendingLoading, sendMessage, onchange, renderCreatedMessage }) => {
   const messageArea = useRef<HTMLTextAreaElement | any>();
   const [messageValue, setMessageValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const { getItem } = useLocalStorage();
+  const params = useParams();
 
   const updateHeight = (e: ChangeEvent | any) => {
     setMessageValue(e.target.value)
@@ -37,7 +44,35 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
     messageArea.current.style.height = e.target.scrollHeight + 'px';
     onchange(e.target.value);
   }
-  return <div className="w-full border-t pt-2 sm:bg-transparent    px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
+
+  const createMessage = async () => {
+    setLoading(true);
+
+    try {
+      const request = await axios.post('http://localhost:3000/conversation/message', {
+        chatId: params.id,
+        prompt: messageValue
+      },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: "Bearer " + getItem("auth").token,
+          }
+        });
+
+      setLoading(false);
+      renderCreatedMessage(request.data);
+
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+
+
+
+
+  return <div className="max-w-[1200px] m-auto w-full border-t pt-2 sm:bg-transparent    px-1 border-[#ffffff17] custom-md:border-none items-center gap-3 flex">
     <div className="flex w-[80%] pr-[5px] p-1 items-center   rounded-md  bg-[#ffffff0b]">
       <textarea
         value={messageValue}
@@ -50,14 +85,13 @@ const ChatArea: React.FC<Props> = ({ listening, onStartRecording, onStopRecordin
       <RippleButton>
         <button
           disabled={messageValue.trim().length > 5 ? false : true}
-          onClick={() => sendMessage()}
+          onClick={() => createMessage()}
           type="button"
           className="border outline-none flex items-center justify-center text-[24px] text-[#ffffff89] bg-[#ffffff0b] disabled:cursor-not-allowed disabled:opacity-[0.3]  rounded-md outline border-[#ffffff25]  w-16">
-          {!sendingLoading ? <VscSend /> : <RotatingLines strokeColor="#ccc" width="18" />}
+          {!loading ? <VscSend /> : <RotatingLines strokeColor="#ccc" width="18" />}
         </button>
       </RippleButton>
     </div>
-
 
     <div className={`relative ${!canRecord && "record-btn-container"}`}>
       {!canRecord &&
