@@ -34,12 +34,12 @@ export const useFetchState = (): returnedValue => {
                     return {
                         id: chat._id,
                         createdAd: formatDate(chat.createdAt),
-                        messages: [...chat.messages.map((message: []) => ({ ...message, loaded: true }))]
+                        messages: [...chat.messages]
                     }
                 });
 
                 const previousChats = [...chatState];
-                const emptyArray = [...chatState].splice(0, chatState.length);
+                const emptyArray = [...[]] 
                 setChatState([...emptyArray]);
                 setChatState([...previousChats, ...formatedData]);
 

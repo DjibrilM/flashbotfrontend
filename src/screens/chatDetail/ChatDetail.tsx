@@ -1,9 +1,5 @@
 import "regenerator-runtime/runtime";
 import ChatArea from "../../components/forms/ChatArea";
-import { useSpeechContext } from '@speechly/react-client';
-import feather from '../../assets/feather.png';
-import ResponseMessage from "../../components/response-message/response-message";
-import { createRipples } from "react-ripples";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRecoilState } from "recoil";
 import chatsAtom from "../../../recoil/atoms/chats";
@@ -11,28 +7,18 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { useLocalStorage } from "../../hooks/localStorage";
 import { useNavigate } from "react-router";
-
-;
-
-const NoMessage = () => {
-  return <div className="flex flex-col items-center justify-center pb-32 w-full h-full ">
-    <div className=" relative custom-md:right-40 flex items-center flex-col ">
-      <img className="w-40 sm:w-52" src={feather} />
-      <h1 className=" mt-3 text-slate-300">Type Your First Message</h1>
-    </div>
-  </div>
-}
+import MessagesList from "../../components/MessagesList/MessagesList";
 
 const ChatDetail = () => {
   const messagesContainer = useRef<HTMLDivElement>();
   const [chats, setChats] = useRecoilState(chatsAtom);
   const params = useParams();
   const [selectedChats, setSelectedChats] = useState<any[]>();
-  const [message, setMessage] = useState<string>();
+  const messageInput = useRef<string>();
   const [messageRequestLoading, setMessageRequestLoading] = useState<boolean>(false);
   const [updateChatsPending, updateChats] = useTransition();
   const { getItem } = useLocalStorage();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
 
   const extractMessagesList = () => {
@@ -46,18 +32,17 @@ const ChatDetail = () => {
   };
 
 
-
-
   useEffect(() => {
     extractMessagesList();
   }, []);
 
   const createMessage = async () => {
     setMessageRequestLoading(true);
+
     try {
       const request = await axios.post('http://localhost:3000/conversation/message', {
         chatId: params.id,
-        prompt: message
+        prompt: messageInput.current
       },
         {
           withCredentials: true,
@@ -67,11 +52,9 @@ const ChatDetail = () => {
         });
 
       setMessageRequestLoading(false);
-      console.log(request.data);
       renderCreatedMessage(request.data);
-      
+
     } catch (error) {
-      console.log(error);
       setMessageRequestLoading(false);
     }
   };
@@ -79,53 +62,54 @@ const ChatDetail = () => {
   const scrollToEnd = () => {
     const container = messagesContainer.current;
     const scrollTimer = setTimeout(() => {
-      container?.scroll({ top: container.scrollHeight , });
+      container?.scroll({ top: container.scrollHeight, behavior: "smooth" });
       clearTimeout(scrollTimer);
     }, 0)
 
   };
 
   const scrollToLatestChat = () => {
-    const lastChat = messagesContainer.current?.lastElementChild;
+    const lastChat = document.getElementById(`${selectedChats![selectedChats?.length! - 1].id}`);
     lastChat?.scrollIntoView({ behavior: "smooth" });
   }
 
   const renderCreatedMessage = (message: any) => {
-    console.log(message);
     const previousMessages = [...selectedChats!];
     previousMessages.push(message);
     setSelectedChats([...previousMessages]);
-    scrollToLatestChat();
 
-    updateChats(() => {
-      const previousChatsState = [...chats];
-      const selectedChatIndex = chats.findIndex((chat) => chat.id === params.id);
-      const selectedChatPreviousMessage = previousChatsState[selectedChatIndex];
-      selectedChatPreviousMessage.messages.push(message);
-    });
+    try {
+      updateChats(() => {
+        const previousChatsState = [...chats];
+        const selectedChatIndex = chats.findIndex((chat) => chat.id === params.id);
+        const selectedChatClone = { ...previousChatsState[selectedChatIndex], messages: [...previousChatsState[selectedChatIndex].messages] };
+
+        selectedChatClone.messages.push(message);
+        previousChatsState[selectedChatIndex] = { ...selectedChatClone };
+
+        setChats([...previousChatsState]);
+        scrollToLatestChat();
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   const inputUpdate = (e: string) => {
-    setMessage(e);
+    messageInput.current = e;
   }
 
 
   return <>
-    <div ref={(el: HTMLDivElement) => messagesContainer.current = el} style={false ? { background: "#0006" } : {}} className="sideMenu-container rounded-bl-lg px-2 pt-20 relative z-30 overflow-auto h-screen  flex flex-col   w-full  text-white ">
-      {selectedChats!?.length > 0 && (selectedChats?.map((message, index) => (<ResponseMessage
-        index={index}
-        length={selectedChats.length}
-        scrollToTheEnd={() => scrollToEnd()}
-        loaded={message.loaded}
-        result={message.result}
-        prompt={message.prompt} />
-      )))}
-      {selectedChats!?.length <= 0 && <NoMessage />}
+    <div ref={(el: HTMLDivElement) => messagesContainer.current = el} style={false ? { background: "#0006" } : {}} className="sideMenu-container m-auto rounded-bl-lg px-2 pt-20 relative z-30 overflow-auto h-screen  flex flex-col   w-full max-w-[1200px]   text-white ">
+      <MessagesList selectedChats={selectedChats} scrollToEnd={scrollToEnd} />
     </div>
 
-
+    {updateChatsPending && <p>loading...</p>}
 
     <ChatArea
+      renderCreatedMessage={renderCreatedMessage}
       onchange={inputUpdate}
       sendMessage={createMessage}
       sendingLoading={messageRequestLoading}
@@ -136,5 +120,7 @@ const ChatDetail = () => {
   </>
     ;
 };
+
+
 
 export default ChatDetail;
