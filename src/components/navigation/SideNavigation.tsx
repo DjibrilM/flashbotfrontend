@@ -18,6 +18,9 @@ import uiState from '../../../recoil/atoms/sideNavigation';
 import { BsEmojiFrown } from 'react-icons/bs';
 import { fetchChatErrorMessage } from "../../constants";
 import { TbMessage2Cog } from 'react-icons/tb';
+import uiAtom from "../../../recoil/atoms/ui";
+
+
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -43,6 +46,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     const sideMenuUiState = useRecoilValue(uiState);
     const { fetchLoading, fetchChats } = useFetchState();
     const { createChatLoading, createChat } = useCreateChat();
+    const [globalUiState] = useRecoilState(uiAtom);
 
     const logout = () => {
         setAuthorizationData({
@@ -67,6 +71,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
     };
 
     useEffect(() => {
+        if (globalUiState.chatsLoaded) return;
         if (sideMenuUiState.itemCount - chatState.length > 0 || sideMenuUiState.itemCount === 0) {
             fetchChatsFn();
         }
@@ -151,10 +156,6 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
 
         <div className="mt-10  ">
             <ul className="">
-                <li className="flex  relative bottom-6 w-full  text-gray-200 gap-8 pb-3  border-b border-[#ffffff0b]  items-center font-bold">
-                    <span className="text-sm">Voice Reader</span>
-                    <Switch />
-                </li>
 
                 {/* alert popup */}
                 <AlertPopUp
@@ -170,22 +171,26 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                     errorMessage={errorMeesage}
                     open={error}
                     close={() => setError(false)} />
+            </ul>
+        </div>
 
+        <div style={{ maxWidth: "350px" }} className=" absolute bottom-0 w-full">
+
+            <RippleButton >
                 <button
+                    className=" w-full py-3 px-2 bg-[#ffffff0b] mb-4 rounded-lg"
                     onClick={() => {
                         setOpenAlertPopup(true);
                         setAlertPopupTitle("Are you sure ?")
                         setAlertPopupDescription("You will be logged mt-4 out from the application, do you really want to continue 🤔")
                     }}>
-                    <li className="flex text-gray-200 mt-2 cursor-pointer  gap-4 items-center font-bold">
-                        <BiLogOut className="text-2xl" />
+                    <div className="flex text-gray-200 w-full  mt-2 cursor-pointer  gap-4 items-center font-bold">
+                        <BiLogOut className="text-4xl" />
                         <span>Logout</span>
-                    </li>
+                    </div>
                 </button>
-            </ul>
-        </div>
+            </RippleButton>
 
-        <div style={{ maxWidth: "350px" }} className=" absolute bottom-0 w-full">
             <RippleButton >
                 <div className="bg-[#ffffff0b] max-w-[350px] w-full rounded-md overflow-hidden">
                     <button onClick={() => createChatFn()} className="w-full h-14 flex items-center justify-center font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
