@@ -7,6 +7,9 @@ import { useState } from "react";
 import chatsAtom from "../../recoil/atoms/chats";
 import { useLocalStorage } from "./localStorage";
 import { fetchChatErrorMessage } from "../constants";
+import globalstate from "../../recoil/atoms/ui";
+
+
 
 interface returnedValue {
     fetchLoading: boolean,
@@ -18,6 +21,7 @@ export const useFetchState = (): returnedValue => {
     const [fetchLoading, setLoading] = useState<boolean>(false);
     const [chatState, setChatState] = useRecoilState(chatsAtom);
     const { getItem } = useLocalStorage();
+    const [globalUiState, setGlobalUiState] = useRecoilState(globalstate);
 
     const fetchChats = async () => {
         setLoading(true);
@@ -39,13 +43,16 @@ export const useFetchState = (): returnedValue => {
                 });
 
                 const previousChats = [...chatState];
-                const emptyArray = [...[]] 
+                const emptyArray = [...[]]
                 setChatState([...emptyArray]);
                 setChatState([...previousChats, ...formatedData]);
 
-                
+
                 const previousPagination = uiAtom.pagination;
-                if (request.data.chats?.length > 1) setUiAtom({ ...uiAtom, itemCount: request.data.itemsCount, pagination: previousPagination + 1 });
+                if (request.data.chats?.length > 1) {
+                    setUiAtom({ ...uiAtom, itemCount: request.data.itemsCount, pagination: previousPagination + 1 });
+                    setGlobalUiState({ ...globalUiState, chatsLoaded: true });
+                }
 
                 const timer = setTimeout(() => {
                     setLoading(false);

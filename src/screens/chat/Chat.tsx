@@ -2,28 +2,39 @@ import SideNavigation from "../../components/navigation/SideNavigation";
 import MainHeader from "../../components/header/MainHeader";
 import { Outlet } from "react-router";
 import { useParams } from 'react-router-dom';
-import chatVector from '../../assets/live-chat.png';
+import { AiFillApi } from 'react-icons/ai'
 import MobileSideMenu from '../../components/navigation/MobileSideMenu';
+import { useLocalStorage } from "../../hooks/localStorage";
+import BottomSnackMessage from "../../components/popup/bottomSnackMessage";
 
 import { createRipples } from 'react-ripples'
-import {useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
     during: 600,
-    className: "w-[200px] rounded-md "
+    className: "w-full mt-5 rounded-md "
 })
 
-const WhiteRippleButton = createRipples({
-    color: "#ffffff64",
-    during: 600,
-    className: "w-[200px]  rounded-md "
-})
 
 export const Chat = () => {
     const param = useParams();
     const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(true);
     const [mobileSideMenuOpen, SetMobileSideMenuOpen] = useState<boolean>(false);
+    const [apikey, setApikey] = useState<string>('');
+    const { setItem, getItem } = useLocalStorage();
+    const [showScanBar, setShowSnackBar] = useState<boolean>(false);
+
+    const saveAPikey = (e: FormEvent) => {
+        e.preventDefault();
+        setItem(apikey, 'api-key');
+        setShowSnackBar(true);
+
+        const timeout = setTimeout(() => {
+            setShowSnackBar(false);
+            clearTimeout(timeout);
+        }, 1000);
+    }
 
     return <main className="bg-[#131d2f] flex flex-col     h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
@@ -34,38 +45,25 @@ export const Chat = () => {
                 <Outlet />
                 {!param.id &&
                     <>
-                        <div className="sm:max-w-[500px] sm:w-full bg-white mx-4 sm:m-auto  h-[300px] rounded-lg  ">
-                            <img className="w-32 pt-10 m-auto" src={chatVector} alt="" />
-                            <h1 className="bg-red text-center  mt-3  text-gray-700">No chat selected yet <span className="text-3xl">🤖</span> </h1>
-
-                            <div className="flex justify-center">
-                                <WhiteRippleButton>
-                                    <button onClick={() => SetMobileSideMenuOpen(true)} className="px-7 custom-md:hidden font-bold text-white mt-5 rounded-md text-sm bg-blue-500 py-3 m-auto">
-                                        select chat
-                                    </button>
-                                </WhiteRippleButton>
+                        <div className="sm:max-w-[500px] sm:w-full bg-white mt-32 mx-2 sm:mx-auto py-4  px-4 rounded-lg  ">
+                            <div className=" w-full flex justify-center pt-5">
+                                <AiFillApi className=" text-center text-4xl text-slate-600" />
                             </div>
+                            <h1 className=" text-center  mb-5 text-2xl font-bold text-slate-600">Your api-key</h1>
+                            <p className=" text-center text-slate-600">Your api-key is safe and is only stored in your local storage</p>
+                            <form onSubmit={saveAPikey} action="">
+                                <input defaultValue={getItem('api-key')} pattern="^[A-Za-z][A-Za-z0-9!@#$%^&* ]*$" minLength={4} onChange={(e: ChangeEvent<HTMLInputElement>) => setApikey(e.target.value)} formNoValidate required type="text" className="rounded-md invalid:border-red-500 outline-slate-500 mt-5 w-full py-2 px-2 border border-slate-300" />
 
-                        </div>
-                        <p className="max-w-[500px] custom-md:block hidden  m-auto mt-10 w-full text-center text-gray-300 ">
-                            This application is in experimental mode, and we only give 10 messages per account
-                        </p>
-                        <p className="text-white custom-md:block hidden  text-center text-sm mt-5">
-                            Please feel free to leave your feedback
-                        </p>
-                        <div className="w-full custom-md:flex hidden justify-center mt-4">
-                            <RippleButton >
-                                <div className="bg-[#ffffff0b] max-w-[] w-full rounded-md overflow-hidden">
-                                    <button className="w-full text-sm h-[3rem] font-bold text-white  active:shadow-lg  bg-[##ffffff19]">
-                                        contact us
-                                    </button>
-                                </div>
-                            </RippleButton>
+                                <RippleButton>
+                                    <button className=" w-full py-3 text-slate-100 bg-slate-800">Save api-key</button>
+                                </RippleButton>
+                            </form>
                         </div>
                     </>
                 }
             </section>
         </section>
+        {showScanBar && <BottomSnackMessage message="key saved" />}
     </main>;
 };
 
