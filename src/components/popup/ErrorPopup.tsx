@@ -12,11 +12,14 @@ interface Props {
 };
 
 
+
+
+
 const ErrorPopup: React.FC<Props> = ({ errorMessage, close, open }) => {
     return (
         open ? <>
-            <div onClick={() => close()} className='fixed top-0 left-0 z-50 bg-[#131d2fe5]  w-full h-screen'></div>
-            <div className="w-full fixed  z-[51] top-0 pt-20 flex justify-center">
+            <div onClick={() => close()} className='fixed top-0 left-0 z-[52] bg-[#131d2fe5]  w-full h-screen'></div>
+            <div className="w-full fixed  z-[53] top-0 pt-20 flex justify-center">
                 <motion.div animate={scalPopupAnimate} initial={scalPopupInitial} className="max-w-[550px] mx-3  flex flex-col justify-between relative overflow-hidden rounded-md  shadow-lg w-full    h-[250px] bg-white">
 
                     <div className="">
