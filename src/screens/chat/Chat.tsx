@@ -8,7 +8,7 @@ import { useLocalStorage } from "../../hooks/localStorage";
 import BottomSnackMessage from "../../components/popup/bottomSnackMessage";
 
 import { createRipples } from 'react-ripples'
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const RippleButton = createRipples({
     color: "#ffffff0b",
@@ -36,6 +36,10 @@ export const Chat = () => {
         }, 1000);
     }
 
+    useEffect(() => {
+        setApikey(getItem('api-key'));
+    }, [])
+
     return <main className="bg-[#131d2f] flex flex-col     h-screen  w-full" >
         <MainHeader openMobileMenu={() => SetMobileSideMenuOpen(true)} openDesktopMenu={() => setSideMenuOpen(!sideMenuOpen)} />
         <section style={{ gap: sideMenuOpen ? "30px" : "" }} className="flex h-full  custom-md:mx-5 ">
@@ -52,7 +56,7 @@ export const Chat = () => {
                             <h1 className=" text-center  mb-5 text-2xl font-bold text-slate-600">Your api-key</h1>
                             <p className=" text-center text-slate-600">Your api-key is safe and is only stored in your local storage</p>
                             <form onSubmit={saveAPikey} action="">
-                                <input defaultValue={getItem('api-key')} pattern="^[A-Za-z][A-Za-z0-9!@#$%^&* ]*$" minLength={4} onChange={(e: ChangeEvent<HTMLInputElement>) => setApikey(e.target.value)} formNoValidate required type="text" className="rounded-md invalid:border-red-500 outline-slate-500 mt-5 w-full py-2 px-2 border border-slate-300" />
+                                <input defaultValue={apikey} pattern="^[A-Za-z][A-Za-z0-9!@#$%^&* ]*$" minLength={4} onChange={(e: ChangeEvent<HTMLInputElement>) => setApikey(e.target.value)} formNoValidate required type="text" className="rounded-md invalid:border-red-500 outline-slate-500 mt-5 w-full py-2 px-2 border border-slate-300" />
 
                                 <RippleButton>
                                     <button className=" w-full py-3 text-slate-100 bg-slate-800">Save api-key</button>

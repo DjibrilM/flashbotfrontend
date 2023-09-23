@@ -1,9 +1,7 @@
 import { BsChatLeftDots } from "react-icons/bs";
 import ChatItem from "../chatItem/ChatItem";
-import { BiLogOut } from 'react-icons/bi';
 import { createRipples } from 'react-ripples'
 import React, { useEffect, useState } from "react";
-import Switch from "../switch/Switch";
 import AlertPopUp from "../popup/AlertPopUp";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authenticationAtom } from "../../../recoil/atoms/authentication";
@@ -184,8 +182,7 @@ const SideNavigation: React.FC<Props> = ({ isOpen }) => {
                         setAlertPopupTitle("Are you sure ?")
                         setAlertPopupDescription("You will be logged mt-4 out from the application, do you really want to continue 🤔")
                     }}>
-                    <div className="flex text-gray-200 w-full  mt-2 cursor-pointer  gap-4 items-center font-bold">
-                        <BiLogOut className="text-4xl" />
+                    <div className="flex text-gray-200 justify-center w-full  mt-2 cursor-pointer  gap-4 items-center font-bold">
                         <span>Logout</span>
                     </div>
                 </button>

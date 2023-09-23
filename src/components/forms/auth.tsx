@@ -3,7 +3,6 @@ import { validateEmail } from "../../helpers/validation";
 import { validatePassword } from "../../helpers/validation";
 import React, { useState } from "react";
 import { createRipples } from 'react-ripples';
-import { Link } from "react-router-dom";
 import { RotatingLines } from "react-loader-spinner";
 
 const RippleButton = createRipples({
@@ -31,7 +30,7 @@ interface InputType {
 
 
 
-export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading, type }) => {
+export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading }) => {
 
     const formInitialValue: InputType[] = [
         {
@@ -80,7 +79,6 @@ export const AuthForm: React.FC<Props> = ({ submitButtonLabel, onSubmit, loading
         })}
 
         <div className="max-w-[400px] relative flex bottom-4  mt-2 m-auto">
-            {type !== 'register' && <Link to="/forgotten-password" className=" top-4 relative text-sm text-blue-600"> <p className="">Forgotten Password ? </p> </Link>}
         </div>
 
         <div className="max-w-[400px] m-auto mt-5">
