@@ -14,6 +14,7 @@ import AlertPopUp from '../popup/AlertPopUp';
 import ErrorPopup from '../popup/ErrorPopup';
 
 
+
 interface Props {
     opened: boolean,
     closeFn: Function
